@@ -1,0 +1,11 @@
+[flake8]
+import-order-style=google
+inline-quotes=double
+
+ignore=DC100
+exclude=*/migrations/*,
+per-file-ignores=
+    manage.py:DC102
+
+application_import_names=stockMonitor
+multiline-quotes=double
