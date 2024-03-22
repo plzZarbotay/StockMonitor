@@ -9,7 +9,7 @@ SECRET_KEY = lyceum.misc.get_env_str(
 )
 DEBUG = lyceum.misc.get_env_str("DJANGO_DEBUG", default="True")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -18,6 +18,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "stockMonitor", # путь к приложению (не уверен, что так.)
+    "django.contrib.postgres"
+    
 ]
 
 MIDDLEWARE = [
@@ -52,8 +55,12 @@ WSGI_APPLICATION = "stockMonitor.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres" # имя пользователя для DB
+        "PASSWORD": "postgres", # Пароль пользователя
+        "HOST": "pgdb", # Наименование контейнера для базы данных в Docker Compose
+        "PORT": "5432",
     }
 }
 
