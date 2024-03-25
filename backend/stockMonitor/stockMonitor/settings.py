@@ -1,15 +1,28 @@
 from pathlib import Path
 
-import lyceum.misc
+import dotenv
+import os
+
+import stockMonitor.misc
+
+
+a = dotenv.load_dotenv("../../.env")
+b = dotenv.load_dotenv("../.env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-SECRET_KEY = lyceum.misc.get_env_str(
+SECRET_KEY = stockMonitor.misc.get_env_str(
     "DJANGO_SECRET_KEY", default="NotSecretKey"
 )
-DEBUG = lyceum.misc.get_env_str("DJANGO_DEBUG", default="True")
+DEBUG = stockMonitor.misc.get_env_str("DJANGO_DEBUG", default="True")
+POSTGRES_USER = stockMonitor.misc.get_env_str(
+    "POSTGRES_USER", default="postgres"
+)
+POSTGRES_PASSWORD = stockMonitor.misc.get_env_str(
+    "POSTGRES_PASSWORD", default="postgres"
+)
+POSTGRES_DB = stockMonitor.misc.get_env_str("POSTGRES_DB", default="test")
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -18,9 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "stockMonitor", # путь к приложению (не уверен, что так.)
-    "django.contrib.postgres"
-    
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [
@@ -56,10 +67,10 @@ WSGI_APPLICATION = "stockMonitor.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres" # имя пользователя для DB
-        "PASSWORD": "postgres", # Пароль пользователя
-        "HOST": "pgdb", # Наименование контейнера для базы данных в Docker Compose
+        "NAME": POSTGRES_DB,
+        "USER": POSTGRES_USER,  # имя пользователя для DB
+        "PASSWORD": POSTGRES_PASSWORD,  # Пароль пользователя
+        "HOST": "localhost",  # Наименование контейнера для базы данных в Docker Compose
         "PORT": "5432",
     }
 }
@@ -67,19 +78,19 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation"
-                ".UserAttributeSimilarityValidator",
+        ".UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation"
-                ".MinimumLengthValidator",
+        ".MinimumLengthValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation"
-                ".CommonPasswordValidator",
+        ".CommonPasswordValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation"
-                ".NumericPasswordValidator",
+        ".NumericPasswordValidator",
     },
 ]
 
