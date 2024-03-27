@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  pgdb:
+    env_file:
+      - ./.env
+    image: postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=${POSTGRES_DATA}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    restart: on-failure
+
+#  swagger-editor:
+#    image: swaggerapi/swagger-editor
+#    ports:
+#      - 80:8080
+#    volumes:
+#      - ./swagger.yml:/tmp/swagger.yml
+#    environment:
+#      - SWAGGER_FILE=/tmp/swagger.yml
+
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /tmp/db_data/
+      o: bind

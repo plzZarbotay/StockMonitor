@@ -21,6 +21,10 @@ def get_env_str(key: str, default: str | None) -> str:
     """Get a string value from environment variables or return default"""
     return os.environ.get(key, default)
 
+def get_env_int(key: str, default: int | None) -> int:
+    """Get a integer value from environment variables or return default"""
+    return int(os.environ.get(key, default))
+
 
 def get_env_list(key: str, default_value: str | None) -> list[str]:
     """Get a list of values from environment variables or return default"""

@@ -21,7 +21,7 @@ POSTGRES_PASSWORD = stockMonitor.misc.get_env_str(
     "POSTGRES_PASSWORD", default="postgres"
 )
 POSTGRES_DB = stockMonitor.misc.get_env_str("POSTGRES_DB", default="test")
-
+# POSTGRES_PORT = stockMonitor.misc.get_env_str("POSTGRES_PORT", default="5432")
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
 INSTALLED_APPS = [
@@ -68,9 +68,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": POSTGRES_DB,
-        "USER": POSTGRES_USER,  # имя пользователя для DB
-        "PASSWORD": POSTGRES_PASSWORD,  # Пароль пользователя
-        "HOST": "localhost",  # Наименование контейнера для базы данных в Docker Compose
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }

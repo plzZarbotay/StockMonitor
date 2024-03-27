@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: StockMonitor - OpenAPI 3.0
+  description: |-
+    Описание API для бэкенда stockMonitor
+  version: 0.0.1
+servers:
+  - url: http://localhost
+paths:
+  /api/v1/authorize/check-existance:
+    post:
+      tags:
+        - User
+        - Authorization
+      summary: Check existance of user
+      description: Check existance of user by email
+      operationId: checkUserExistance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  description: User email
+                  type: string
+                  default: test@gmail.com
+              required:
+                - mail
+      responses:
+        200:
+          description: User exists
+        404:
+          description: User doesn`t exist
+  /api/v1/register:
+    post:
+      tags:
+        - User
+        - Authorization
+      summary: Register user
+      description: Register user using password and email
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthorize'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserAuthorize'
+        required: true
+      responses:
+        200:
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /api/v1/authorize:
+    post:
+      tags:
+        - User
+        - Authorization
+      summary: Authorize or register user
+      description: Authorize or register user using password and email
+      operationId: authorizeUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthorize'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserAuthorize'
+        required: true
+      responses:
+        200:
+          description: User successfully authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /api/v1/refresh-token:
+    post:
+      tags:
+        - User
+        - Authorization
+      summary: Update tokens
+      description: Update tokens using refresh token
+      requestBody:
+        description: Update tokens using refresh token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh:
+                  description: Refresh token
+                  type: string
+                  default: IG8F&%!pjhUOF!(g
+              required:
+                - refresh
+      responses:
+        200:
+          description: Token successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /api/v1/profile:
+    get:
+      tags:
+        - User
+
+components:
+  schemas:
+    UserAuthorize:
+      type: object
+      properties:
+        mail:
+          type: string
+          required: true
+          default: jonny_young@yahoo.com
+        password:
+          type: string
+          required: true
+          default: hello_i_am_test_password
+    TokenResponse:
+      type: object
+      properties:
+        access:
+          description: Access token
+          type: string
+          default: IbyuvtuF!T&f7tDt8f18tF@*t102U)*U!
+        refresh:
+          description: Access token
+          type: string
+          default: Fouhyasgf1212euy9gY(!2rft102!2fv
+  requestBodies:
+    UserAuthorize:
+      description: User object to authorize
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAuthorize'
