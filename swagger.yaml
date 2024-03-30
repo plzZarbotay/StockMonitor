@@ -121,7 +121,29 @@ paths:
     get:
       tags:
         - User
-
+  /api/v1/profile/portfolio:
+    get:
+      tags:
+        - User
+      summary: get portfolio instruments
+      description: get portfolio instruments
+    post:
+      tags:
+        - User
+      summary: add instruments to portfolio
+      description: add instruments to portfolio
+  /api/v1/blogs:
+    get:
+      tags:
+        - User
+      summary: get blogs
+      description: get all blogs from all users
+  /api/v1/news:
+    get:
+      tags:
+        - User
+      summary: get news
+      description: get all news
 components:
   schemas:
     UserAuthorize:
