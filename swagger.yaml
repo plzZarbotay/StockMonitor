@@ -117,31 +117,63 @@ paths:
             application/x-www-form-urlencoded:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
+  /api/v1/market:
+    get:
+      tags:
+        - Search / Analytics
+      summary: get table of tools
+      description: get tools based on search results
+  /api/v1/market/{toolId}:
+    get:
+      tags:
+        - Search / Analytics
+      summary: get tool info
+      description: get detailed tool info
+      parameters:
+        - in: path
+          name: toolId
+          required: true
+          schema:
+            type: string
+  /api/v1/analytics/{toolId}:
+    get:
+      tags:
+        - Search / Analytics
+      summary: get some analytics on the tool
+      description: get all sort of analytics on the tool page
+      parameters:
+        - in: path
+          name: toolId
+          required: true
+          schema:
+            type: string
   /api/v1/profile:
     get:
       tags:
         - User
+      summary: get user description
+      description: get all user description
   /api/v1/profile/portfolio:
     get:
       tags:
         - User
-      summary: get portfolio instruments
-      description: get portfolio instruments
+      summary: get portfolio tools
+      description: get portfolio tools
     post:
       tags:
         - User
-      summary: add instruments to portfolio
-      description: add instruments to portfolio
+      summary: add tools to portfolio
+      description: add tools to portfolio
   /api/v1/blogs:
     get:
       tags:
-        - User
+        - Articles
       summary: get blogs
       description: get all blogs from all users
   /api/v1/news:
     get:
       tags:
-        - User
+        - Articles
       summary: get news
       description: get all news
 components:
