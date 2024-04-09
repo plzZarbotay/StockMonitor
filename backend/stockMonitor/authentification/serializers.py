@@ -18,6 +18,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        """Create a new user"""
         return models.User.objects.create_user(**validated_data)
 
 
