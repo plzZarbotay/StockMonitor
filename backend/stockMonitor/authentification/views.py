@@ -36,12 +36,6 @@ class RegistrationView(APIView):
         )
 
 
-class LoginView(TokenObtainPairView):
-    """"""
-
-    serializer_class = serializers.LoginSerializer
-
-
 class CheckExistanceView(APIView):
     """View for check if user exists"""
 
