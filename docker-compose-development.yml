@@ -31,5 +31,5 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /tmp/db_data/
+      device: /postgres_data/stockMonitor/
       o: bind
