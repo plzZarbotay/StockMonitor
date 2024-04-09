@@ -1,3 +1,4 @@
+[![Django CI](https://github.com/plzZarbotay/StockMonitor/actions/workflows/django.yml/badge.svg?branch=master)](https://github.com/plzZarbotay/StockMonitor/actions/workflows/django.yml)
 # Проект "Web Market Analysis Tool"
 
 ## Описание проекта
