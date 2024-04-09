@@ -10,11 +10,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         """Meta class"""
+
         model = models.User
         fields = (
             "email",
             "password",
         )
+
+    def create(self, validated_data):
+        return models.User.objects.create_user(**validated_data)
 
 
 class CheckEmailExistanceSerializer(serializers.Serializer):

@@ -8,8 +8,10 @@ __all__ = []
 
 class User(AbstractUser):
     """Override default Django user model."""
+
     class Themes(models.TextChoices):
         """Choices for theme field"""
+
         LIGHT = ("LT", "light")
         DARK = ("DR", "dark")
         colorblind = ("CB", "colorblind")
@@ -18,9 +20,6 @@ class User(AbstractUser):
     email = models.EmailField(
         "адрес электронной почты",
         unique=True,
-        error_messages={
-            "unique": "A user with that username already exists.",
-        },
     )
     theme = models.CharField(choices=Themes, default=Themes.LIGHT)
 
