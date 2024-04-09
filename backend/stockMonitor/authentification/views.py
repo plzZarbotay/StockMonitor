@@ -1,23 +1,22 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from core import models
 from authentification import serializers
+from core import models
 
 __all__ = []
 
 
 class RegistrationView(APIView):
     """View for registration"""
+
     serializer_class = serializers.RegisterSerializer
 
     def post(self, request):
-        "Post method"
+        """Post method"""
         serializer = serializers.RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -39,13 +38,15 @@ class RegistrationView(APIView):
 
 class LoginView(TokenObtainPairView):
     """"""
+
     serializer_class = serializers.LoginSerializer
 
 
 class CheckExistanceView(APIView):
     """View for check if user exists"""
+
     def post(self, request):
-        "Post method"
+        """Post method"""
         serializer = serializers.CheckEmailExistanceSerializer(
             data=request.data,
         )

@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import dotenv
@@ -29,6 +30,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "authentification.apps.AuthentificationConfig",
+    "core.apps.CoreConfig",
 ]
 
 MIDDLEWARE = [

@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from authentification.errors import Errors
 from core import models
 
 __all__ = []
@@ -11,6 +9,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     """Serializer for registration"""
 
     class Meta:
+        """Meta class"""
         model = models.User
         fields = (
             "email",
