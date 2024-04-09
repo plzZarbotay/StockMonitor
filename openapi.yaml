@@ -6,12 +6,14 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost
+tags:
+  - name: User
+    description: Everything describing user interface
 paths:
-  /api/v1/authorize/check-existance:
+  /api/v1/authentificate/check-existance:
     post:
       tags:
         - User
-        - Authorization
       summary: Check existance of user
       description: Check existance of user by email
       operationId: checkUserExistance
@@ -22,14 +24,14 @@ paths:
             schema:
               type: object
               properties:
-                mail:
+                email:
                   description: User email
                   type: string
                   default: test@gmail.com
               required:
-                - mail
+                - email
       responses:
-        200:
+        204:
           description: User exists
         404:
           description: User doesn`t exist
@@ -37,7 +39,6 @@ paths:
     post:
       tags:
         - User
-        - Authorization
       summary: Register user
       description: Register user using password and email
       operationId: registerUser
@@ -46,34 +47,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserAuthorize'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UserAuthorize'
         required: true
       responses:
-        200:
+        201:
           description: User successfully registered
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-            application/x-www-form-urlencoded:
-              schema:
-                $ref: '#/components/schemas/TokenResponse'
-  /api/v1/authorize:
+  /api/v1/authentificate:
     post:
       tags:
         - User
-        - Authorization
       summary: Authorize or register user
       description: Authorize or register user using password and email
       operationId: authorizeUser
       requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/UserAuthorize'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UserAuthorize'
         required: true
@@ -84,14 +75,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-            application/x-www-form-urlencoded:
-              schema:
-                $ref: '#/components/schemas/TokenResponse'
+        401:
+          description: Unauthorized
   /api/v1/refresh-token:
     post:
       tags:
         - User
-        - Authorization
       summary: Update tokens
       description: Update tokens using refresh token
       requestBody:
@@ -114,16 +103,81 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-            application/x-www-form-urlencoded:
+  /api/v1/forget-password:
+    post:
+      tags:
+        - User
+      summary: Reset password
+      description: Reset password using email
+      requestBody:
+        description: Update tokens using refresh token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: User email
+                  type: string
+                  default: mail_kyky@email.ru
+              required:
+                - email
+      responses:
+        200:
+          description: Password reset successfully requested
+        404:
+          description: User with email not found
+  /api/v1/profile/{user_id}:
+    get:
+      tags:
+        - User
+      summary: Get user`s profile
+      description: Get user`s profile if authorized
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+          example: 3422b448-2460-4fd2-9183-8000de6f8343
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/Profile'
+        403:
+          description: Access forbidden
+      security:
+        - AccessApiKey: [ ]
+  /api/v1/profile/{user_id}/portfolio:
+    get:
+      tags:
+        - User
+      summary: Get user`s portfolio
+      description: Get user`s portfolio if authorized
+      responses:
+        200:
+          description: Successful request
+        401:
+          description:
+        403:
+          description: Access forbidden
+      security:
+        - AccessApiKey: [ ]
+    post:
+      tags:
+        - User
+      summary: add tools to portfolio
+      description: add tools to portfolio
   /api/v1/market:
     get:
       tags:
         - Search / Analytics
       summary: get table of tools
       description: get tools based on search results
-  /api/v1/market/{toolId}:
+  /api/v1/market/{tool_id}:
     get:
       tags:
         - Search / Analytics
@@ -131,11 +185,11 @@ paths:
       description: get detailed tool info
       parameters:
         - in: path
-          name: toolId
+          name: tool_id
           required: true
           schema:
             type: string
-  /api/v1/analytics/{toolId}:
+  /api/v1/analytics/{tool_id}:
     get:
       tags:
         - Search / Analytics
@@ -143,27 +197,10 @@ paths:
       description: get all sort of analytics on the tool page
       parameters:
         - in: path
-          name: toolId
+          name: tool_id
           required: true
           schema:
             type: string
-  /api/v1/profile:
-    get:
-      tags:
-        - User
-      summary: get user description
-      description: get all user description
-  /api/v1/profile/portfolio:
-    get:
-      tags:
-        - User
-      summary: get portfolio tools
-      description: get portfolio tools
-    post:
-      tags:
-        - User
-      summary: add tools to portfolio
-      description: add tools to portfolio
   /api/v1/blogs:
     get:
       tags:
@@ -181,25 +218,57 @@ components:
     UserAuthorize:
       type: object
       properties:
-        mail:
+        email:
           type: string
-          required: true
           default: jonny_young@yahoo.com
         password:
           type: string
-          required: true
           default: hello_i_am_test_password
+      required:
+        - email
+        - password
     TokenResponse:
       type: object
       properties:
         access:
           description: Access token
           type: string
-          default: IbyuvtuF!T&f7tDt8f18tF@*t102U)*U!
+          example: IbyuvtuF!T&f7tDt8f18tF@*t102U)*U!
         refresh:
-          description: Access token
+          description: Refresh token
           type: string
-          default: Fouhyasgf1212euy9gY(!2rft102!2fv
+          example: Fouhyasgf1212euy9gY(!2rft102!2fv
+    Profile:
+      type: object
+      properties:
+        name:
+          description: User name
+          type: string
+          example: Ibragim
+        email:
+          description: User email
+          type: string
+          example: ibragim_hello@yahoo.com
+        theme:
+          description: Site theme selected by user
+          type: string
+          enum:
+            - light
+            - dark
+            - colorblind
+  securitySchemes:
+    AccessApiKey:
+      # Аутентификация - подтверждение личности
+      # Авторизация - разрешения того или иного действия
+      description: Authorizing access with API key provided by authentification
+      type: apiKey
+      name: access-key
+      in: header
+    RefreshApiKey:
+      description: Updating access API key using refresh key
+      type: apiKey
+      name: refresh-key
+      in: header
   requestBodies:
     UserAuthorize:
       description: User object to authorize

@@ -4,9 +4,8 @@ import dotenv
 
 import stockMonitor.misc
 
-
-a = dotenv.load_dotenv("../../.env")
-b = dotenv.load_dotenv("../.env")
+dotenv.load_dotenv("../../.env")
+dotenv.load_dotenv("../.env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = stockMonitor.misc.get_env_str(
@@ -91,6 +90,19 @@ AUTH_PASSWORD_VALIDATORS = [
         ".NumericPasswordValidator",
     },
 ]
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+}
+AUTH_USER_MODEL = "core.User"
 
 LANGUAGE_CODE = "ru-RU"
 
