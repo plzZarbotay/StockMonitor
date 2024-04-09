@@ -39,6 +39,8 @@ class RegistrationView(APIView):
 class CheckExistanceView(APIView):
     """View for check if user exists"""
 
+    serializer_class = serializers.CheckEmailExistanceSerializer
+
     def post(self, request):
         """Post method"""
         serializer = serializers.CheckEmailExistanceSerializer(
