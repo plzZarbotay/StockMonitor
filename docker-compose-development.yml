@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - PGDATA=${POSTGRES_DATA}
     ports:
-      - "5432:5432"
+      - "5432:${POSTGRES_PORT}"
     volumes:
       - db_data:/var/lib/postgresql/data/
     restart: on-failure
@@ -29,7 +29,3 @@ services:
 volumes:
   db_data:
     driver: local
-    driver_opts:
-      type: none
-      device: /postgres_data/stockMonitor/
-      o: bind

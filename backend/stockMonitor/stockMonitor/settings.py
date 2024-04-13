@@ -20,6 +20,7 @@ POSTGRES_PASSWORD = stockMonitor.misc.get_env_str(
     "POSTGRES_PASSWORD", default="postgres"
 )
 POSTGRES_DB = stockMonitor.misc.get_env_str("POSTGRES_DB", default="test")
+POSTGRES_PORT = stockMonitor.misc.get_env_str("POSTGRES_PORT", default="5432")
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
 INSTALLED_APPS = [
@@ -73,7 +74,7 @@ DATABASES = {
         "USER": POSTGRES_USER,
         "PASSWORD": POSTGRES_PASSWORD,
         "HOST": "localhost",
-        "PORT": "5432",
+        "PORT": POSTGRES_PORT,
     }
 }
 
