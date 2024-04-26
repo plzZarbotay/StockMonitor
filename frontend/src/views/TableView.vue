@@ -4,22 +4,86 @@
       <thead>
         <tr>
           <th>Название</th>
-          <th>Цена</th>
-          <th>Изм. за день</th>
-          <th>Капитализация</th>
+          <th>Цена/ед</th>
+          <th>Изменение</th>
+          <th>Объем торгов</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>{{ 1 }}</td>
-          <td>{{ 1 }}</td>
-          <td>{{ 1 }}</td>
-          <td>{{ 1 }}</td>
+        <tr
+          v-for="(row, value) in tableData"
+          :key="value"
+          @click="
+            $router.push({
+              name: 'stock',
+              params: {
+                name: row.name,
+                price: row.price,
+                description: row.description,
+              },
+            })
+          "
+        >
+          <td>
+            <span>{{ row.name }}</span>
+          </td>
+          <td>{{ row.price }}</td>
+          <td
+            :style="{
+              color: row.change.startsWith('+')
+                ? 'Lime'
+                : row.change.startsWith('-')
+                ? 'OrangeRed'
+                : 'white',
+            }"
+          >
+            {{ row.change }}
+          </td>
+          <td>{{ row.volume }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: "Tesla, Inc.",
+          price: "20$",
+          change: "+10%",
+          volume: "$122k",
+          description: "Описание акции Tesla",
+        },
+        {
+          name: "Yandex, Inc.",
+          price: "0.01$",
+          change: "-90%",
+          volume: "$1k",
+          description: "Описание акции Yandex",
+        },
+        {
+          name: "Google, Inc.",
+          price: "15$",
+          change: "-11%",
+          volume: "$1222k",
+          description: "Описание акции Google",
+        },
+        {
+          name: "Google, Inc.",
+          price: "15$",
+          change: "+11%",
+          volume: "$1222k",
+          description: "Описание акции Google",
+        },
+      ],
+    };
+  },
+};
+</script>
 
 <style>
 body {
@@ -42,9 +106,9 @@ tfoot {
 
 table {
   position: absolute;
-  width: 1284px;
-  height: 868px;
-  top: 52px;
+  width: 90%;
+  height: auto;
+  top: 82px;
   background: #335062;
   border-radius: 29px;
   border-collapse: collapse;
@@ -52,16 +116,19 @@ table {
   font-size: 0.8rem;
   letter-spacing: 1px;
 }
-
 tbody {
   font-size: medium;
 }
 
 th,
 td {
+  color: #fff;
   padding: 8px 10px;
 }
-
+tr {
+  padding: 0;
+  margin: 0;
+}
 td {
   text-align: center;
 }

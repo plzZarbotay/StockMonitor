@@ -1,7 +1,8 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/table">Table</router-link>
+    <router-link to="/">Главная</router-link> |
+    <router-link to="/about">О нас</router-link> |
+    <router-link to="/table">Акции</router-link>
   </nav>
   <router-view />
 </template>
@@ -16,7 +17,7 @@
 }
 
 nav {
-  padding: 0px;
+  padding: 30px;
 }
 
 nav a {
