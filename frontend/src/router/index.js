@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import ToolDescView from "../components/ToolDescView.vue";
+import ProfileView from "../views/ProfileView.vue";
+import AboutView from "../views/AboutView.vue";
 import TableView from "../views/TableView.vue";
-import ToolDescView from "@/views/ToolDescView.vue";
-import ProfileView from "@/views/ProfileView.vue";
 
 const routes = [
   {
@@ -11,22 +12,29 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/table",
-    name: "table",
-    component: TableView,
-    // разделение кода на уровне маршрута
-    // это генерирует отдельный чанк (about.[hash].js) для этого маршрута
-    // который загружается лениво при посещении маршрута.
-  },
-  {
-    path: "/description",
-    name: "description",
-    component: ToolDescView,
-  },
-  {
     path: "/profile",
     name: "profile",
     component: ProfileView,
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: AboutView,
+  },
+  {
+    path: "/table",
+    name: "table",
+    component: TableView,
+  },
+  {
+    path: "/stock/:name",
+    name: "stock",
+    component: ToolDescView,
+    props: (route) => ({
+      name: route.params.name,
+      price: route.params.price,
+      description: route.params.description,
+    }),
   },
 ];
 
