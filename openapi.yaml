@@ -10,7 +10,7 @@ tags:
   - name: User
     description: Everything describing user interface
 paths:
-  /api/v1/authentificate/check-existance:
+  /api/v1/auth/check-existance:
     post:
       tags:
         - User
@@ -35,7 +35,7 @@ paths:
           description: User exists
         404:
           description: User doesn`t exist
-  /api/v1/register:
+  /api/v1/auth/register:
     post:
       tags:
         - User
@@ -55,7 +55,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-  /api/v1/authentificate:
+  /api/v1/auth/:
     post:
       tags:
         - User
@@ -77,7 +77,7 @@ paths:
                 $ref: '#/components/schemas/TokenResponse'
         401:
           description: Unauthorized
-  /api/v1/refresh-token:
+  /api/v1/auth/refresh-token:
     post:
       tags:
         - User
@@ -103,7 +103,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-  /api/v1/forget-password:
+  /api/v1/auth/reset_password:
     post:
       tags:
         - User
@@ -127,7 +127,26 @@ paths:
           description: Password reset successfully requested
         404:
           description: User with email not found
-  /api/v1/profile/{user_id}:
+  /api/v1/auth/reset_password/confirm/{uuidUser}/{token}:
+    get:
+      tags:
+        - User
+      summary: Authorize user to reset password
+      description: Endpoint to authorize reset of password. Endpoint should be called from email link
+      parameters:
+        - in: path
+          name: uuidUser
+          required: true
+          schema:
+            type: string
+          example: 3422b448-2460-4fd2-9183-8000de6f8343
+        - in: path
+          name: token
+          required: true
+          schema:
+            type: string
+          example: 3422b448-2460-4fd2-9183-8000de6f8343
+  /api/v1/profile/{uuidUser}:
     get:
       tags:
         - User
@@ -135,7 +154,7 @@ paths:
       description: Get user`s profile if authorized
       parameters:
         - in: path
-          name: user_id
+          name: uuidUser
           required: true
           schema:
             type: string
@@ -161,7 +180,7 @@ paths:
         200:
           description: Successful request
         401:
-          description:
+          description: Unauthorized request
         403:
           description: Access forbidden
       security:
@@ -175,8 +194,21 @@ paths:
     get:
       tags:
         - Search / Analytics
-      summary: get table of tools
-      description: get tools based on search results
+      summary: Get table of stocks
+      description: Get stocks data. If passed argument "q", then returns data, based on search query.
+      parameters:
+        - in: query
+          name: q
+          required: false
+          schema:
+            type: string
+          example: yandex
+      responses:
+        200:
+          description: Password reset successfully requested
+        404:
+          description: User with email not found
+
   /api/v1/market/{tool_id}:
     get:
       tags:
@@ -189,30 +221,7 @@ paths:
           required: true
           schema:
             type: string
-  /api/v1/analytics/{tool_id}:
-    get:
-      tags:
-        - Search / Analytics
-      summary: get some analytics on the tool
-      description: get all sort of analytics on the tool page
-      parameters:
-        - in: path
-          name: tool_id
-          required: true
-          schema:
-            type: string
-  /api/v1/blogs:
-    get:
-      tags:
-        - Articles
-      summary: get blogs
-      description: get all blogs from all users
-  /api/v1/news:
-    get:
-      tags:
-        - Articles
-      summary: get news
-      description: get all news
+
 components:
   schemas:
     UserAuthorize:
@@ -256,6 +265,21 @@ components:
             - light
             - dark
             - colorblind
+    Stock:
+      type: object
+      properties:
+        ticker:
+          description: Stock ticker
+          type: string
+          example: YNDX
+        shortname:
+          description: Stock name
+          type: string
+          example: Яндекс
+        type:
+          description: Stock type
+          type: string
+          example: common_share
   securitySchemes:
     AccessApiKey:
       # Аутентификация - подтверждение личности

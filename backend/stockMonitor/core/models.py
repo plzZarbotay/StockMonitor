@@ -1,5 +1,8 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from core import managers
 
@@ -22,11 +25,24 @@ class User(AbstractUser):
         unique=True,
     )
     theme = models.CharField(choices=Themes, default=Themes.LIGHT)
+    uuid = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = managers.UserManager()
+
+    class Meta:
+        """Meta class"""
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
+        indexes = [
+            models.Index(fields=["uuid"]),
+        ]
 
     def __str__(self):
         return self.email

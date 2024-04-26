@@ -1,4 +1,6 @@
 from django.urls import path
+from django_rest_passwordreset.views import reset_password_confirm
+from django_rest_passwordreset.views import reset_password_request_token
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -11,13 +13,13 @@ app_name = "auth"
 
 urlpatterns = [
     path(
-        "authentificate/",
+        "",
         TokenObtainPairView.as_view(),
         name="authentification",
     ),
     path("refresh-token/", TokenRefreshView.as_view(), name="refresh-token"),
     path(
-        "authentificate/check-existance/",
+        "check-existance/",
         views.CheckExistanceView.as_view(),
         name="check-existance",
     ),
@@ -25,5 +27,13 @@ urlpatterns = [
         "register/",
         views.RegistrationView.as_view(),
         name="register",
+    ),
+    path(
+        "reset_password/", reset_password_request_token, name="reset_password"
+    ),
+    path(
+        "reset_password/confirm/",
+        reset_password_confirm,
+        name="reset_password_confirm",
     ),
 ]
