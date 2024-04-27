@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -50,3 +51,28 @@ class CheckExistanceView(APIView):
         if models.User.objects.filter(email=email):
             return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
         return JsonResponse(data={}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ChangePasswordView(APIView):
+    """View for change password"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """Post method"""
+        serializer = serializers.ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            if user.check_password(serializer.data.get("old_password")):
+                user.set_password(serializer.data.get("new_password"))
+                user.save()
+                return JsonResponse(
+                    {"message": "Password changed successfully."},
+                    status=status.HTTP_200_OK,
+                )
+            return JsonResponse(
+                {"error": "Incorrect old password."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return JsonResponse(
+            serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )

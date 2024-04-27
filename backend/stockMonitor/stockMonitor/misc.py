@@ -27,7 +27,7 @@ def get_env_int(key: str, default: int | None) -> int:
     return int(os.environ.get(key, default))
 
 
-def get_env_list(key: str, default_value: str | None) -> list[str]:
+def get_env_list(key: str, default: str | None) -> list[str]:
     """Get a list of values from environment variables or return default"""
-    data = os.environ.get(key, default_value).split(",")
+    data = os.environ.get(key, default).split(",")
     return list(filter(None, data))

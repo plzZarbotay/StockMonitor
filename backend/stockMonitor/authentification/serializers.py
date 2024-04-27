@@ -1,17 +1,18 @@
-from rest_framework import serializers
+import rest_framework.serializers
 
-from core import models
+import core.models
+import core.serializers
 
 __all__ = []
 
 
-class RegisterSerializer(serializers.ModelSerializer):
+class RegisterSerializer(rest_framework.serializers.ModelSerializer):
     """Serializer for registration"""
 
     class Meta:
         """Meta class"""
 
-        model = models.User
+        model = core.models.User
         fields = (
             "email",
             "password",
@@ -19,10 +20,30 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create a new user"""
-        return models.User.objects.create_user(**validated_data)
+        return core.models.User.objects.create_user(**validated_data)
 
 
-class CheckEmailExistanceSerializer(serializers.Serializer):
+class CheckEmailExistanceSerializer(rest_framework.serializers.Serializer):
     """Serializer for checking email"""
 
-    email = serializers.EmailField(max_length=200)
+    email = rest_framework.serializers.EmailField(
+        max_length=200,
+    )
+
+
+class ChangePasswordSerializer(rest_framework.serializers.Serializer):
+    """Serializer for changing password"""
+    old_password = core.serializers.PasswordField(
+        required=True,
+    )
+    new_password = core.serializers.PasswordField(
+        required=True,
+    )
+
+
+class ResetPasswordEmailSerializer(rest_framework.serializers.Serializer):
+    """Serializer for reseting email"""
+    email = rest_framework.serializers.EmailField(
+        required=True,
+        max_length=200,
+    )
