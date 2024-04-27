@@ -3,7 +3,6 @@ from django.db import models
 from stocks.managers import StockDataManager
 from stocks.managers import StockManager
 
-
 __all__ = []
 
 

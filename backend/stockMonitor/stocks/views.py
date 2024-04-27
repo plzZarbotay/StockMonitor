@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 
 from stocks.models import Stock
 
-
 __all__ = []
 
 
