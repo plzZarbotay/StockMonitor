@@ -7,6 +7,7 @@ import stockMonitor.misc
 
 dotenv.load_dotenv("../../.env")
 dotenv.load_dotenv("../.env")
+SITE_NAME = "Дэшборд акций"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = stockMonitor.misc.get_env_str(
@@ -21,7 +22,9 @@ POSTGRES_PASSWORD = stockMonitor.misc.get_env_str(
 )
 POSTGRES_DB = stockMonitor.misc.get_env_str("POSTGRES_DB", default="test")
 POSTGRES_PORT = stockMonitor.misc.get_env_str("POSTGRES_PORT", default="5432")
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = stockMonitor.misc.get_env_list(
+    "DJANGO_ALLOWED_HOSTS", default="*"
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -33,13 +36,18 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "rest_framework",
     "rest_framework_simplejwt",
+    "django_rest_passwordreset",
+    "corsheaders",
     "authentification.apps.AuthentificationConfig",
     "core.apps.CoreConfig",
+    "stocks.apps.StocksConfig",
+    # "django_celery_beat",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -52,7 +60,7 @@ ROOT_URLCONF = "stockMonitor.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR, BASE_DIR / "../" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -102,6 +110,9 @@ REST_FRAMEWORK = {
     ),
 }
 
+CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
+    "DJANGO_CORS_HOSTS", "http://localhost:3000"
+)
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),

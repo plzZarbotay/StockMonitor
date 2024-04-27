@@ -30,7 +30,14 @@
    ```
    python manage.py runserver
    ```
-
+8. Запустить планировщик
+   ```
+   celery -A stockMonitor beat -l INFO
+   ```
+9. Запустить worker
+   ```
+   celery -A stockMonitor worker -l INFO
+   ```
 ## Переменные окружения
 
 - `DJANGO_DEBUG` - `true`, `1`, `t`, если режим отладки, иначе `false`
