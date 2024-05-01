@@ -5,6 +5,7 @@ __all__ = []
 
 class UserManager(BaseUserManager):
     """Override BaseUserManager to add custom user model"""
+
     def _create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given username, email, and password.
