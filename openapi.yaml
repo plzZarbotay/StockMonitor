@@ -221,6 +221,27 @@ paths:
           required: true
           schema:
             type: string
+  /api/v1/get_site_name:
+    get:
+      tags:
+        - Other
+      summary: Return name of site
+      description: Return name of site, which displays in title
+      responses:
+        200:
+          description: Return name of site
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  site_name:
+                    type: string
+              examples:
+                name:
+                  value:
+                    site_name: "Дэшборд"
+
 
 components:
   schemas:
@@ -276,10 +297,15 @@ components:
           description: Stock name
           type: string
           example: Яндекс
+        description:
+          description: Stock description
+          type: string
+          example: Яндекс - компания, занимающаяся поиском, туда сюда
         type:
           description: Stock type
           type: string
           example: common_share
+
   securitySchemes:
     AccessApiKey:
       # Аутентификация - подтверждение личности
