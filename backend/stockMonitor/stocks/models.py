@@ -8,11 +8,12 @@ __all__ = []
 
 class Stock(models.Model):
     """Model for stock"""
+
     name = models.CharField(max_length=100)
-    ticker = models.CharField(max_length=5, unique=True)
+    ticker = models.CharField(max_length=8, unique=True)
     description = models.TextField()
-    emitent_country = models.CharField(max_length=50)
-    market = models.CharField(max_length=100)
+    emitent_country = models.CharField(max_length=50)  # наша Russia
+    market = models.CharField(max_length=100)  # акции
 
     objects = StockManager()
 
@@ -35,6 +36,7 @@ class Stock(models.Model):
 
 class StockData(models.Model):
     """Model for stock data"""
+
     stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE)
     open_cost = models.DecimalField(
         verbose_name="цена открытия", decimal_places=3, max_digits=10
