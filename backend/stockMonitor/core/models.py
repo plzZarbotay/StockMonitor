@@ -38,6 +38,7 @@ class User(AbstractUser):
 
     class Meta:
         """Meta class"""
+
         verbose_name = _("user")
         verbose_name_plural = _("users")
         indexes = [

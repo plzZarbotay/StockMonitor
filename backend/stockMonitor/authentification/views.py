@@ -55,6 +55,7 @@ class CheckExistanceView(APIView):
 
 class ChangePasswordView(APIView):
     """View for change password"""
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):

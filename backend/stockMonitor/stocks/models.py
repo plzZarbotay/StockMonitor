@@ -12,8 +12,8 @@ class Stock(models.Model):
     name = models.CharField(max_length=100)
     ticker = models.CharField(max_length=8, unique=True)
     description = models.TextField()
-    emitent_country = models.CharField(max_length=50)  # наша Russia
-    market = models.CharField(max_length=100)  # акции
+    emitent_country = models.CharField(max_length=50)
+    market = models.CharField(max_length=100)
 
     objects = StockManager()
 
@@ -39,16 +39,24 @@ class StockData(models.Model):
 
     stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE)
     open_cost = models.DecimalField(
-        verbose_name="цена открытия", decimal_places=3, max_digits=10
+        verbose_name="цена открытия",
+        decimal_places=3,
+        max_digits=10,
     )
     close_cost = models.DecimalField(
-        verbose_name="цена закрытия", decimal_places=3, max_digits=10
+        verbose_name="цена закрытия",
+        decimal_places=3,
+        max_digits=10,
     )
     high = models.DecimalField(
-        verbose_name="самая высокая цена", decimal_places=3, max_digits=10
+        verbose_name="самая высокая цена",
+        decimal_places=3,
+        max_digits=10,
     )
     low = models.DecimalField(
-        verbose_name="самая низкая цена", decimal_places=3, max_digits=10
+        verbose_name="самая низкая цена",
+        decimal_places=3,
+        max_digits=10,
     )
     value = models.DecimalField(
         verbose_name="объем торгов(в деньгах)",
@@ -60,3 +68,6 @@ class StockData(models.Model):
     end = models.DateTimeField(verbose_name="время закрытия")
 
     objects = StockDataManager()
+
+    def __str__(self):
+        return f"<StockData: {self.stock_id} {self.begin} {self.end}>"

@@ -6,7 +6,7 @@ markdown
 django-filter
 djangorestframework-simplejwt
 django-cors-headers
-celery
+celery[redis]
 django-rest-passwordreset
-redis
 django-celery-beat
+pandas
