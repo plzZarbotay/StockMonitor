@@ -1,12 +1,12 @@
-from django.contrib import admin
-
 from core import models
+from stockMonitor.admin import admin
 
 __all__ = []
 
 
 class UserAdmin(admin.ModelAdmin):
     """Admin for User model"""
+
     search_fields = ("uuid", "email")
 
 

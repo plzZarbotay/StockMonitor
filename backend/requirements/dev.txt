@@ -1,1 +1,2 @@
 -r prod.txt
+django-debug-toolbar

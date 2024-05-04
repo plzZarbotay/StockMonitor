@@ -3,12 +3,11 @@ from datetime import datetime
 import pandas as pd
 import requests
 
-from stocks.models import Stock
-
 __all__ = []
 
 
 def load_companies() -> pd.DataFrame:
+
     base_url = "https://iss.moex.com/iss/securities.json"
     params = {"start": 0, "engine": "stock", "market": "shares"}
     data = []
@@ -18,7 +17,11 @@ def load_companies() -> pd.DataFrame:
             break
         response = response.json()
         data += [
-            {k: r[i] for i, k in enumerate(response["securities"]["columns"])}
+            {
+                k: r[i]
+                for i, k in enumerate(response["securities"]["columns"])
+                if k in ["secid", "shortname", "name", "is_traded", "type"]
+            }
             for r in response["securities"]["data"]
         ]
         params["start"] += 100
@@ -30,15 +33,18 @@ def load_companies() -> pd.DataFrame:
 
 
 def get_candles(
-    ticker: str, from_date: datetime, till_date: datetime, interval: int
+    ticker: str,
+    from_date: datetime,
+    till_date: datetime,
+    interval: int,
 ) -> pd.DataFrame:
     """Get candles data by ticker parameter"""
+    if till_date is None:
+        till_date = datetime.now()
     url = (
         f"https://iss.moex.com/iss/engines/stock/markets/shares/"
         f"securities/{ticker}/candles.json"
     )
-    if till_date is None:
-        till_date = datetime.now()
     params = {
         "from": from_date.strftime("%Y-%m-%d %H:%M:%S"),
         "till": till_date.strftime("%Y-%m-%d %H:%M:%S"),
@@ -50,22 +56,3 @@ def get_candles(
         for r in response["candles"]["data"]
     ]
     return pd.DataFrame(candles)
-
-
-# def get_frontend_info(ticker: str):
-#     t = datetime.datetime.now() - datetime.
-
-
-def insert_to_database():
-    """Put parsed data about companies to database"""
-    records = load_companies().to_dict("records")
-    model_instances = [
-        Stock(
-            name=record["shortname"],
-            ticker=record["secid"],
-            market="Stocks",
-            emitent_country="RU",
-        )
-        for record in records
-    ]
-    Stock.objects.bulk_create(model_instances)

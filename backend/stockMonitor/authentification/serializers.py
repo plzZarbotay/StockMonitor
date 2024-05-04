@@ -33,6 +33,7 @@ class CheckEmailExistanceSerializer(rest_framework.serializers.Serializer):
 
 class ChangePasswordSerializer(rest_framework.serializers.Serializer):
     """Serializer for changing password"""
+
     old_password = core.serializers.PasswordField(
         required=True,
     )
@@ -43,6 +44,7 @@ class ChangePasswordSerializer(rest_framework.serializers.Serializer):
 
 class ResetPasswordEmailSerializer(rest_framework.serializers.Serializer):
     """Serializer for reseting email"""
+
     email = rest_framework.serializers.EmailField(
         required=True,
         max_length=200,

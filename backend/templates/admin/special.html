@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+{% block nav-sidebar %}{% endblock %}
+{% block content %}
+<div class="custom-admin-content">
+    <form action="{% url 'admin:special_admin' %}" method="post">
+        {%csrf_token%}
+        <button type="submit" name="parse" value="companies">Парсинг компаний</button>
+        <button type="submit" name="parse" value="candlesAll">Парсинг всех компаний (DANGER BUTTON!)</button>
+        <button type="submit" name="parse" value="candles">Парсинг данных YNDX за последний год</button>
+        <button type="submit" name="parse" value="data_clean">Удалить данные</button>
+    </form>
+</div>
+{% endblock %}
