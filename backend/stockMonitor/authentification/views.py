@@ -1,6 +1,9 @@
 from django.http import JsonResponse
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import inline_serializer
+from drf_spectacular.utils import OpenApiResponse
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import CharField
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -15,8 +18,16 @@ class RegistrationView(APIView):
 
     serializer_class = serializers.RegisterSerializer
 
+    @extend_schema(
+        responses={
+            201: inline_serializer(
+                name="register_success",
+                fields={"refresh": CharField(), "access": CharField()},
+            )
+        }
+    )
     def post(self, request):
-        """Post method"""
+        """Endpoint for registration"""
         serializer = serializers.RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -41,39 +52,23 @@ class CheckExistanceView(APIView):
 
     serializer_class = serializers.CheckEmailExistanceSerializer
 
+    @extend_schema(
+        responses={
+            204: OpenApiResponse(description="Email exists"),
+            404: OpenApiResponse(description="Email doesnt exist"),
+            400: OpenApiResponse(
+                description="Wrong request, maybe email is incorrect"
+            ),
+        },
+    )
     def post(self, request):
-        """Post method"""
+        """Endpoint for checking if user exists by email"""
         serializer = serializers.CheckEmailExistanceSerializer(
             data=request.data,
         )
-        serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data.pop("email")
-        if models.User.objects.filter(email=email):
-            return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
-        return JsonResponse(data={}, status=status.HTTP_404_NOT_FOUND)
-
-
-class ChangePasswordView(APIView):
-    """View for change password"""
-
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        """Post method"""
-        serializer = serializers.ChangePasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            user = request.user
-            if user.check_password(serializer.data.get("old_password")):
-                user.set_password(serializer.data.get("new_password"))
-                user.save()
-                return JsonResponse(
-                    {"message": "Password changed successfully."},
-                    status=status.HTTP_200_OK,
-                )
-            return JsonResponse(
-                {"error": "Incorrect old password."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        return JsonResponse(
-            serializer.errors, status=status.HTTP_400_BAD_REQUEST
-        )
+        if serializer.is_valid(raise_exception=False):
+            email = serializer.validated_data.pop("email")
+            if models.User.objects.filter(email=email):
+                return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
+            return JsonResponse(data={}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse(data={}, status=status.HTTP_400_BAD_REQUEST)
