@@ -1,9 +1,9 @@
 [![Django CI](https://github.com/plzZarbotay/StockMonitor/actions/workflows/django.yml/badge.svg?branch=master)](https://github.com/plzZarbotay/StockMonitor/actions/workflows/django.yml)
-# Проект "Web Market Analysis Tool"
+# Проект "Stock Market Monitor"
 
 ## Описание проекта
 
-Веб-интерфейс "Web Market Analysis Tool" разработан для анализа данных рынка в целом. Он предоставляет возможность
+Веб-интерфейс "Stock Market Monitor" разработан для анализа данных рынка в целом. Он предоставляет возможность
 парсинга данных о объеме продаж, трендах покупателей и динамике из дня в день. Пользователи могут генерировать красивые
 отчеты и анализы на основе этих данных.
 
@@ -34,6 +34,11 @@
    Выполнить команду для запуска через консоль:
    ```
    docker compose up -d pgdb
+   ```
+   > Если нет прав - выполните следующие команды
+   ```
+   sudo chmod a+rwx /var/run/docker.sock
+   sudo chmod a+rwx /var/run/docker.pid
    ```
 
 ### Переменные окружения
