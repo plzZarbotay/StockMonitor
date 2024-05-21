@@ -37,6 +37,7 @@
    ```
    > Если нет прав - выполните следующие команды
    ```
+   sudo dockerd
    sudo chmod a+rwx /var/run/docker.sock
    sudo chmod a+rwx /var/run/docker.pid
    ```
