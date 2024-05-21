@@ -1,5 +1,5 @@
 [![Django CI](https://github.com/plzZarbotay/StockMonitor/actions/workflows/django.yml/badge.svg?branch=master)](https://github.com/plzZarbotay/StockMonitor/actions/workflows/django.yml)
-# Проект "Stock Market Monitor"
+# Проект 📈 "Stock Market Monitor"
 
 ## Описание проекта
 
