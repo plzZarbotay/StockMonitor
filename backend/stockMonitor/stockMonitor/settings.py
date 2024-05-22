@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "authentification.apps.AuthentificationConfig",
     "core.apps.CoreConfig",
     "stocks.apps.StocksConfig",
+    "drf_spectacular"
     # "django_celery_beat",
 ]
 

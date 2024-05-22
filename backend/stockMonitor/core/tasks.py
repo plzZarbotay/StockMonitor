@@ -65,7 +65,7 @@ def get_candles_task(
         )
         model_instances = [
             StockData(
-                stock_id=yndx,
+                stock=yndx,
                 open_cost=record["open"],
                 close_cost=record["close"],
                 high=record["high"],

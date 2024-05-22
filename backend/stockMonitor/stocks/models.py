@@ -37,7 +37,7 @@ class Stock(models.Model):
 class StockData(models.Model):
     """Model for stock data"""
 
-    stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     open_cost = models.DecimalField(
         verbose_name="цена открытия",
         decimal_places=3,
@@ -70,4 +70,4 @@ class StockData(models.Model):
     objects = StockDataManager()
 
     def __str__(self):
-        return f"<StockData: {self.stock_id} {self.begin} {self.end}>"
+        return f"<StockData: {self.stock} {self.begin} {self.end}>"

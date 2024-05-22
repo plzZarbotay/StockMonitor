@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ("begin", models.DateTimeField(verbose_name="время открытия")),
                 ("end", models.DateTimeField(verbose_name="время закрытия")),
                 (
-                    "stock_id",
+                    "stock",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         to="stocks.stock",
