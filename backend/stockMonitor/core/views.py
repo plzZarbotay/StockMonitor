@@ -64,7 +64,7 @@ class SetUserNameView(APIView):
 
 
 class ToggleUserThemeView(APIView):
-    """Method for set user first name"""
+    """Method for toggling user theme"""
 
     permission_classes = [IsAuthenticated]
 
