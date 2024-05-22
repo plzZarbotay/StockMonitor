@@ -9,15 +9,21 @@ dotenv.load_dotenv("../.env")
 SITE_NAME = "Дэшборд акций"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = stockMonitor.misc.get_env_str("DJANGO_SECRET_KEY", default="NotSecretKey")
+SECRET_KEY = stockMonitor.misc.get_env_str(
+    "DJANGO_SECRET_KEY", default="NotSecretKey"
+)
 DEBUG = stockMonitor.misc.get_env_str("DJANGO_DEBUG", default="True")
-POSTGRES_USER = stockMonitor.misc.get_env_str("POSTGRES_USER", default="postgres")
+POSTGRES_USER = stockMonitor.misc.get_env_str(
+    "POSTGRES_USER", default="postgres"
+)
 POSTGRES_PASSWORD = stockMonitor.misc.get_env_str(
     "POSTGRES_PASSWORD", default="postgres"
 )
 POSTGRES_DB = stockMonitor.misc.get_env_str("POSTGRES_DB", default="test")
 POSTGRES_PORT = stockMonitor.misc.get_env_str("POSTGRES_PORT", default="5432")
-ALLOWED_HOSTS = stockMonitor.misc.get_env_list("DJANGO_ALLOWED_HOSTS", default="*")
+ALLOWED_HOSTS = stockMonitor.misc.get_env_list(
+    "DJANGO_ALLOWED_HOSTS", default="*"
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -95,13 +101,16 @@ AUTH_PASSWORD_VALIDATORS = [
         ".UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation" ".MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation" ".CommonPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation" ".NumericPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".NumericPasswordValidator",
     },
 ]
 REST_FRAMEWORK = {

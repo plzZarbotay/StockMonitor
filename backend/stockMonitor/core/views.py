@@ -57,6 +57,8 @@ class SetNameView(APIView):
             user = request.user
             user.first_name = first_name
             user.save()
-            return JsonResponse({"success": "First name updated successfully."})
+            return JsonResponse(
+                {"success": "First name updated successfully."}
+            )
         else:
             return JsonResponse(serializer.errors, status=400)
