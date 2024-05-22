@@ -23,7 +23,7 @@ urlpatterns = [
         TokenObtainPairView.as_view(),
         name="authentification",
     ),
-    path("refresh-token/", TokenRefreshView.as_view(), name="refresh-token"),
+    path("refresh_token/", TokenRefreshView.as_view(), name="refresh-token"),
     path(
         "check_existance/",
         views.CheckExistanceView.as_view(),

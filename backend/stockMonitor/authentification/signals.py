@@ -42,7 +42,7 @@ def password_reset_token_created(
     msg = EmailMultiAlternatives(
         "Сброс пароля для {title}".format(title=settings.SITE_NAME),
         email_plaintext_message,
-        "noreply@yourdomain.com",
+        settings.EMAIL_ADDRESS,
         [reset_password_token.user.email],
     )
     msg.attach_alternative(email_html_message, "text/html")

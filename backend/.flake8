@@ -8,5 +8,5 @@ per-file-ignores=
     manage.py:DC102
 
 
-application_import_names=stockMonitor,core,authentification,stocks
+application_import_names=stockMonitor,core,authentification,stocks,portfolio
 multiline-quotes=double
