@@ -41,7 +41,7 @@ class UpdateFirstNameSerializer(serializers.Serializer):
 
 
 class SetNameView(APIView):
-    """Method for setting user first name"""
+    """Method for set user first name"""
 
     permission_classes = [IsAuthenticated]
 
