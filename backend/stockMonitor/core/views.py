@@ -11,6 +11,8 @@ __all__ = []
 class GetNameView(APIView):
     """View for getting name of a site"""
 
+    authentication_classes = []
+
     @extend_schema(
         responses={
             200: inline_serializer(
