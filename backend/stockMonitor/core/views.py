@@ -5,6 +5,7 @@ from drf_spectacular.utils import inline_serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import CharField
 from rest_framework.views import APIView
+import core.models
 
 from core.serializers import UpdateFirstNameSerializer
 
@@ -71,9 +72,9 @@ class ToggleUserThemeView(APIView):
     def post(self, request):
         """Method for setting user first name"""
         user = request.user
-        if user.theme == "LT":
-            user.theme = "DK"
+        if user.theme == core.models.User.Themes.LIGHT:
+            user.theme = core.models.User.Themes.DARK
         else:
-            user.theme = "LT"
+            user.theme = core.models.User.Themes.LIGHT
         user.save()
         return JsonResponse({"success": f"Theme changed to {user.theme}."})
