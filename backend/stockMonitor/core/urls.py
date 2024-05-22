@@ -23,6 +23,6 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="schema-ui",
     ),
-    path("get-username/", GetUserNameView.as_view(), name="get-username"),
-    path("set-username/", SetUserNameView.as_view(), name="set-username"),
+    path("get_username/", GetUserNameView.as_view(), name="get_username"),
+    path("set_username/", SetUserNameView.as_view(), name="set_username"),
 ]

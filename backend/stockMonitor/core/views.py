@@ -58,4 +58,4 @@ class SetUserNameView(APIView):
             return JsonResponse(
                 {"success": "First name updated successfully."}
             )
-        return JsonResponse(serializer.errors, status=400)
+        return JsonResponse({"detail": "Error occurred"})
