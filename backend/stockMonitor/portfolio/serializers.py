@@ -42,6 +42,7 @@ class PortfolioStockSerializer(rest_framework.serializers.ModelSerializer):
 
 class BalanceSerializer(rest_framework.serializers.Serializer):
     """Balance serialzer"""
+
     balance = rest_framework.serializers.DecimalField(
         decimal_places=4,
         max_digits=12,

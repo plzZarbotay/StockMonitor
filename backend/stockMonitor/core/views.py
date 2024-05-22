@@ -61,3 +61,19 @@ class SetUserNameView(APIView):
                 {"success": "First name updated successfully."}
             )
         return JsonResponse({"detail": "Error occurred"})
+
+
+class ToggleUserThemeView(APIView):
+    """Method for toggling user theme"""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """Method for setting user first name"""
+        user = request.user
+        if user.theme == "LT":
+            user.theme = "DK"
+        else:
+            user.theme = "LT"
+        user.save()
+        return JsonResponse({"success": f"Theme changed to {user.theme}."})

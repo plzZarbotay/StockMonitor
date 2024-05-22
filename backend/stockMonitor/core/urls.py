@@ -7,7 +7,7 @@ import authentification.urls
 import core.views
 from core.views import GetUserNameView
 from core.views import SetUserNameView
-import portfolio.urls
+from core.views import ToggleUserThemeView
 import stocks.urls
 
 urlpatterns = [
@@ -18,7 +18,6 @@ urlpatterns = [
         core.views.GetNameView.as_view(),
         name="get_site_name",
     ),
-    path("portfolio/", include(portfolio.urls)),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "swagger/",
@@ -27,4 +26,5 @@ urlpatterns = [
     ),
     path("get_username/", GetUserNameView.as_view(), name="get_username"),
     path("set_username/", SetUserNameView.as_view(), name="set_username"),
+    path("toggle_theme/", ToggleUserThemeView.as_view(), name="toggle_theme"),
 ]
