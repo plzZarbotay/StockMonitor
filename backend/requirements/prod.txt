@@ -10,3 +10,5 @@ celery[redis]
 django-rest-passwordreset
 django-celery-beat
 pandas
+requests
+drf_spectacular

@@ -1,6 +1,5 @@
 from django.db import models
 
-
 __all__ = []
 
 
@@ -34,7 +33,7 @@ class StockDataManager(models.Manager):
     ):
         """interval: 5m: 5, 60m: 60, 1d: 24, 1w: 7, 1m: 31, 1y: 4"""
         candles_by_ticker = self.get_queryset().filter(
-            stock_id__ticker__exact=ticker
+            stock__ticker__exact=ticker
         )
         candles_range = candles_by_ticker.filter(
             begin__gte=from_date,
@@ -52,6 +51,11 @@ class StockDataManager(models.Manager):
                 candles = candles_range.filter(end__hour=23, end__minute=0)
             case _:
                 return None
+        candles = candles.order_by("end")
         if len(candles) > max_candles:
-            candles = candles[:max_candles]
-        return candles.order_by("end")
+            return candles[:max_candles]
+        return candles
+
+    def get_last_price(self, stock):
+        """Function for getting last price of a stock"""
+        return self.filter(stock=stock).latest("begin").close_cost
