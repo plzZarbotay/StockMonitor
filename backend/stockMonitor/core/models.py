@@ -30,6 +30,12 @@ class User(AbstractUser):
         default=uuid.uuid4,
         editable=False,
     )
+    balance = models.DecimalField(
+        verbose_name="баланс пользователя",
+        decimal_places=4,
+        max_digits=12,
+        default=10000,
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

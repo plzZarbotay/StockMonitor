@@ -121,7 +121,12 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
-
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "authentification.tokens.MyTokenGenerator",
+    "OPTIONS": {
+        "token_length": 6,
+    },
+}
 CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
     "DJANGO_CORS_HOSTS", "http://localhost:3000"
 )
