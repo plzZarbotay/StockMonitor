@@ -129,7 +129,6 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
-
 CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
     "DJANGO_CORS_HOSTS", "http://localhost:3000"
 )
