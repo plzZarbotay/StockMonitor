@@ -2,7 +2,6 @@ import json
 
 from django.http import HttpResponse
 
-
 __all__ = []
 
 

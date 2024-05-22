@@ -35,7 +35,7 @@ class AdminSite(BaseAdminSite):
             if parse_data == "companies":
                 get_companies.delay()
             elif parse_data == "candles":
-                notify_users.delay(ticker="YNDX")
+                get_candles_task.delay(ticker="YNDX")
             elif parse_data == "candlesAll":
                 for company in Stock.objects.all():
                     get_candles_task.delay(ticker=company.ticker)
