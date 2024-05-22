@@ -1,12 +1,9 @@
-from django.urls import include
-from django.urls import path
-from drf_spectacular.views import SpectacularAPIView
-from drf_spectacular.views import SpectacularSwaggerView
-from core.views import GetNameView, SetNameView
-
 import authentification.urls
 import core.views
 import stocks.urls
+from core.views import GetNameView, SetNameView
+from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path("auth/", include(authentification.urls)),

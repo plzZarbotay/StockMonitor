@@ -1,11 +1,10 @@
 from django.conf import settings
 from django.http import JsonResponse
-from drf_spectacular.utils import extend_schema
-from drf_spectacular.utils import inline_serializer
-from rest_framework.serializers import CharField
-from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import CharField
+from rest_framework.views import APIView
 
 __all__ = []
 
@@ -58,8 +57,6 @@ class SetNameView(APIView):
             user = request.user
             user.first_name = first_name
             user.save()
-            return JsonResponse(
-                {"success": "First name updated successfully."}
-            )
+            return JsonResponse({"success": "First name updated successfully."})
         else:
             return JsonResponse(serializer.errors, status=400)
