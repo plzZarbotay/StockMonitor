@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     "authentification.apps.AuthentificationConfig",
     "core.apps.CoreConfig",
     "stocks.apps.StocksConfig",
-    # "django_celery_beat",
+    "portfolio.apps.PortfolioConfig",
+    "drf_spectacular",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -117,11 +119,19 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
     "DJANGO_CORS_HOSTS", "http://localhost:3000"
 )
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "StockMonitor API",
+    "DESCRIPTION": "StockMonitor bro",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
@@ -142,6 +152,8 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+PARSING_INTERVAL = 5
+
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "../sent_emails"
@@ -156,3 +168,4 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_cache_backend = "django-cache"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"

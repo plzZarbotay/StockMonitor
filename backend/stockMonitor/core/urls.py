@@ -5,6 +5,7 @@ from drf_spectacular.views import SpectacularSwaggerView
 
 import authentification.urls
 import core.views
+import portfolio.urls
 import stocks.urls
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
         core.views.GetNameView.as_view(),
         name="get_site_name",
     ),
+    path("portfolio/", include(portfolio.urls)),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "swagger/",
