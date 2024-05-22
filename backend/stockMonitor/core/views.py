@@ -5,8 +5,8 @@ from drf_spectacular.utils import inline_serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import CharField
 from rest_framework.views import APIView
-import core.models
 
+import core.models
 from core.serializers import UpdateFirstNameSerializer
 
 __all__ = []
