@@ -18,6 +18,8 @@ __all__ = []
 class MarketView(APIView):
     """Market view"""
 
+    authentication_classes = []
+
     @extend_schema(
         parameters=[
             OpenApiParameter(
@@ -53,7 +55,7 @@ class MarketView(APIView):
         """Method for getting list of stocks
         relevant for data in `q` parameter"""
         search_stock = request.GET.get("q", None)
-        stocks_data = Stock.objects.search_for_stock(search_stock).values()
+        stocks_data = Stock.objects.search_for_stock(search_stock)
         serializer = stocks.serializers.StockSerializer(
             stocks_data.values(), many=True
         )
@@ -62,6 +64,8 @@ class MarketView(APIView):
 
 class MarketDetailView(APIView):
     """Market view"""
+
+    authentication_classes = []
 
     @extend_schema(
         responses={200: stocks.serializers.StockSerializer(), 404: None},
@@ -78,6 +82,7 @@ class MarketDetailView(APIView):
 class StocksDetailView(APIView):
     """Market view"""
 
+    authentication_classes = []
     serializer_class = stocks.serializers.MarketDetailSerializer
 
     @extend_schema(
@@ -109,6 +114,7 @@ class StocksDetailView(APIView):
 class PingView(APIView):
     """Ping view for getting new info"""
 
+    authentication_classes = []
     serializer_class = stocks.serializers.PingSerializer
 
     @extend_schema(

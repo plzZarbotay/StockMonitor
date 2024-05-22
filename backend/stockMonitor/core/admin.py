@@ -1,3 +1,5 @@
+from django_celery_beat.models import PeriodicTask
+
 from core import models
 from stockMonitor.admin import admin
 
@@ -11,3 +13,4 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
+admin.site.register(PeriodicTask)

@@ -6,10 +6,10 @@ __all__ = []
 
 class StockDataAdmin(admin.ModelAdmin):
     """Admin model for StockData model."""
-
-    list_display = ("stock_id", "begin", "end")
-    search_fields = ("stock_id__ticker", "id")
-    list_filter = ("stock_id", "begin", "end")
+    
+    list_display = ("stock", "begin", "end")
+    search_fields = ("stock__ticker", "id")
+    list_filter = ("stock", "begin", "end")
 
 
 admin.site.register(models.Stock)

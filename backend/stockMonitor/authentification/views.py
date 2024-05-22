@@ -16,6 +16,7 @@ __all__ = []
 class RegistrationView(APIView):
     """View for registration"""
 
+    authentication_classes = []
     serializer_class = serializers.RegisterSerializer
 
     @extend_schema(
@@ -50,6 +51,7 @@ class RegistrationView(APIView):
 class CheckExistanceView(APIView):
     """View for check if user exists"""
 
+    authentication_classes = []
     serializer_class = serializers.CheckEmailExistanceSerializer
 
     @extend_schema(

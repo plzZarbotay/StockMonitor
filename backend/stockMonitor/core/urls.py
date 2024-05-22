@@ -7,6 +7,7 @@ import authentification.urls
 import core.views
 from core.views import GetUserNameView
 from core.views import SetUserNameView
+import portfolio.urls
 import stocks.urls
 
 urlpatterns = [
@@ -17,6 +18,7 @@ urlpatterns = [
         core.views.GetNameView.as_view(),
         name="get_site_name",
     ),
+    path("portfolio/", include(portfolio.urls)),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "swagger/",

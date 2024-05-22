@@ -33,11 +33,18 @@ class Stock(models.Model):
             force_insert, force_update, using, update_fields
         )
 
+    class Meta:
+        verbose_name = "акция"
+        verbose_name_plural = "акции"
+        indexes = [
+            models.Index(fields=["ticker"]),
+        ]
+
 
 class StockData(models.Model):
     """Model for stock data"""
 
-    stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     open_cost = models.DecimalField(
         verbose_name="цена открытия",
         decimal_places=3,
@@ -63,11 +70,17 @@ class StockData(models.Model):
         decimal_places=14,
         max_digits=25,
     )
-    volume = models.IntegerField(verbose_name="объем торгов(в акциях)")
+    volume = models.PositiveBigIntegerField(
+        verbose_name="объем торгов(в акциях)"
+    )
     begin = models.DateTimeField(verbose_name="время открытия")
     end = models.DateTimeField(verbose_name="время закрытия")
 
     objects = StockDataManager()
 
     def __str__(self):
-        return f"<StockData: {self.stock_id} {self.begin} {self.end}>"
+        return f"<StockData: {self.stock} {self.begin} {self.end}>"
+
+    class Meta:
+        verbose_name = "свеча"
+        verbose_name_plural = "свечи"
