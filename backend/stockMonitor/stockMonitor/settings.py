@@ -158,6 +158,8 @@ PARSING_INTERVAL = 5
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "../sent_emails"
 
+EMAIL_ADDRESS = "from_email@stockmonitor.ru"
+
 REDIS_PASSWORD = stockMonitor.misc.get_env_str(
     "REDIS_PASSWORD", default="NotSecretPassword"
 )
