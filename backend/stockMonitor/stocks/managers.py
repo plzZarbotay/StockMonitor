@@ -29,7 +29,7 @@ class StockDataManager(models.Manager):
     """Manager for stock data model"""
 
     def get_candles(
-        self, ticker, from_date, till_date, interval, max_candles=1000
+        self, ticker, from_date, till_date, interval, max_candles
     ):
         """interval: 5m: 5, 60m: 60, 1d: 24, 1w: 7, 1m: 31, 1y: 4"""
         candles_by_ticker = self.get_queryset().filter(

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "authentification.apps.AuthentificationConfig",
     "core.apps.CoreConfig",
     "stocks.apps.StocksConfig",
-    "portfolio.apps.PortfolioConfig"
+    "portfolio.apps.PortfolioConfig",
     "drf_spectacular",
     "django_celery_beat",
 ]
@@ -120,7 +120,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SPECTACULAR_SETTINGS = {
@@ -132,13 +131,6 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
     "DJANGO_CORS_HOSTS", "http://localhost:3000"
 )
-
-SPECTACULAR_SETTINGS = {
-    "TITLE": "StockMonitor API",
-    "DESCRIPTION": "StockMonitor bro",
-    "VERSION": "1.0.0",
-    "SERVE_INCLUDE_SCHEMA": False,
-}
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
