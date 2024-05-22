@@ -103,6 +103,7 @@ class StocksDetailView(APIView):
             data.get("from_date"),
             data.get("till_date", datetime.now()),
             data.get("interval"),
+            data.get("max_candles"),
         )
         candles_serializer = stocks.serializers.StockDataSerializer(
             candles,
