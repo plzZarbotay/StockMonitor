@@ -5,6 +5,8 @@ from drf_spectacular.views import SpectacularSwaggerView
 
 import authentification.urls
 import core.views
+from core.views import GetUserNameView
+from core.views import SetUserNameView
 import portfolio.urls
 import stocks.urls
 
@@ -23,4 +25,6 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="schema-ui",
     ),
+    path("get_username/", GetUserNameView.as_view(), name="get_username"),
+    path("set_username/", SetUserNameView.as_view(), name="set_username"),
 ]
