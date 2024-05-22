@@ -2,6 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import dotenv
+
 import stockMonitor.misc
 
 dotenv.load_dotenv("../../.env")

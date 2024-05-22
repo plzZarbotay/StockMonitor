@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.http import JsonResponse
-from drf_spectacular.utils import extend_schema, inline_serializer
-from rest_framework import serializers
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import inline_serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import CharField
 from rest_framework.views import APIView
+
+from core.serializers import UpdateFirstNameSerializer
 
 __all__ = []
 
@@ -24,7 +26,7 @@ class GetNameView(APIView):
         return JsonResponse({"site_name": settings.SITE_NAME})
 
 
-class GetNameView(APIView):
+class GetUserNameView(APIView):
     """View for getting user first name"""
 
     permission_classes = [IsAuthenticated]
@@ -35,11 +37,7 @@ class GetNameView(APIView):
         return JsonResponse({"first_name": name})
 
 
-class UpdateFirstNameSerializer(serializers.Serializer):
-    first_name = serializers.CharField(max_length=100)
-
-
-class SetNameView(APIView):
+class SetUserNameView(APIView):
     """Method for set user first name"""
 
     permission_classes = [IsAuthenticated]
@@ -60,5 +58,4 @@ class SetNameView(APIView):
             return JsonResponse(
                 {"success": "First name updated successfully."}
             )
-        else:
-            return JsonResponse(serializer.errors, status=400)
+        return JsonResponse(serializer.errors, status=400)
