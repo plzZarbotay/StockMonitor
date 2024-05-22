@@ -4,9 +4,7 @@ from django.template.response import TemplateResponse
 from django.urls import path
 
 from core.tasks import delete_all_stock_data_task
-from core.tasks import get_candles_task
-from core.tasks import get_companies
-from core.tasks import notify_users
+from core.tasks import get_candles_task, get_companies
 from stocks.models import Stock
 
 __all__ = []
