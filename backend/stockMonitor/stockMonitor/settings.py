@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "authentification.apps.AuthentificationConfig",
     "core.apps.CoreConfig",
     "stocks.apps.StocksConfig",
+    "portfolio.apps.PortfolioConfig",
+    "drf_spectacular",
     # "django_celery_beat",
 ]
 
@@ -114,9 +116,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "StockMonitor API",
+    "DESCRIPTION": "StockMonitor bro",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
@@ -124,7 +134,7 @@ CORS_ALLOWED_ORIGINS = stockMonitor.misc.get_env_list(
 )
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": True,
 }
@@ -145,6 +155,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "../sent_emails"
+
 
 REDIS_PASSWORD = stockMonitor.misc.get_env_str(
     "REDIS_PASSWORD", default="NotSecretPassword"

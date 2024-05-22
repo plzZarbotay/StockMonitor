@@ -2,6 +2,7 @@ from django.urls import include
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
+from core.views import GetNameView, SetNameView
 
 import authentification.urls
 import core.views
@@ -21,4 +22,6 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="schema-ui",
     ),
+    path("get-username/", GetNameView.as_view(), name="get-username"),
+    path("set-username/", SetNameView.as_view(), name="set-username"),
 ]

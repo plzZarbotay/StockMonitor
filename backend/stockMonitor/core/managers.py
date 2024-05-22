@@ -1,4 +1,6 @@
 from django.contrib.auth.models import UserManager as BaseUserManager
+from rest_framework_simplejwt.tokens import AccessToken
+import core
 
 __all__ = []
 
