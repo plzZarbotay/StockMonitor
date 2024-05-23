@@ -44,7 +44,7 @@ body {
     position: absolute;
     width: 184px;
     height: 47.01px;
-    left: 9%;
+    left: 130px;
     top: 25px;
     font-family: 'system-ui';
     background: linear-gradient(90deg, #7000FF 0%, #872626 180%);
@@ -96,7 +96,7 @@ body {
     position: absolute;
     width: 184px;
     height: 47.01px;
-    left: 19%;
+    left: 230px;
     top: 25px;
     font-family: 'system-ui';
     background: linear-gradient(90deg, #7000FF 0%, #872626 180%);
