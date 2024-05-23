@@ -1,0 +1,15 @@
+<svg width="63" height="2828" viewBox="0 0 63 2828" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="2" y1="2833" x2="2" y2="-7.52807e-05" stroke="#548F64" stroke-width="4"/>
+<line x1="4" y1="100" x2="55" y2="100" stroke="#548F64" stroke-width="4"/>
+<circle cx="52.5" cy="43.5" r="9" stroke="#548F64" stroke-width="3"/>
+<line x1="53" y1="100" x2="53" y2="51" stroke="#548F64" stroke-width="4"/>
+<line x1="4" y1="807" x2="54" y2="807" stroke="#548F64" stroke-width="4"/>
+<line x1="52" y1="807" x2="52" y2="660" stroke="#548F64" stroke-width="4"/>
+<circle cx="52.5" cy="652.5" r="9" stroke="#548F64" stroke-width="3"/>
+<path d="M52 1105.5C57.154 1105.5 61.5 1101.56 61.5 1096.5C61.5 1091.44 57.154 1087.5 52 1087.5C46.846 1087.5 42.5 1091.44 42.5 1096.5C42.5 1101.56 46.846 1105.5 52 1105.5Z" stroke="#548F64" stroke-width="3"/>
+<line x1="4" y1="1156" x2="54" y2="1156" stroke="#548F64" stroke-width="4"/>
+<line x1="52.2529" y1="1155.65" x2="52.2679" y2="1104.08" stroke="#548F64" stroke-width="4"/>
+<path d="M52 1795.5C57.154 1795.5 61.5 1791.56 61.5 1786.5C61.5 1781.44 57.154 1777.5 52 1777.5C46.846 1777.5 42.5 1781.44 42.5 1786.5C42.5 1791.56 46.846 1795.5 52 1795.5Z" stroke="#092A4A" stroke-width="3"/>
+<line x1="52" y1="1906" x2="52.2679" y2="1794.07" stroke="#548F64" stroke-width="4"/>
+<line x1="4" y1="1906" x2="54" y2="1906" stroke="#548F64" stroke-width="4"/>
+</svg>
