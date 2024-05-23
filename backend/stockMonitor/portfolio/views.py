@@ -104,6 +104,7 @@ class OwnedStocksView(APIView):
 
 class BalanceView(APIView):
     """Balance view"""
+
     permission_classes = [IsAuthenticated]
     serializer_class = portfolio.serializers.BalanceSerializer
 

@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import CharField
 from rest_framework.views import APIView
 
+import core.models
 from core.serializers import UpdateFirstNameSerializer
 
 __all__ = []
@@ -61,3 +62,19 @@ class SetUserNameView(APIView):
                 {"success": "First name updated successfully."}
             )
         return JsonResponse({"detail": "Error occurred"})
+
+
+class ToggleUserThemeView(APIView):
+    """Method for toggling user theme"""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """Method for setting user first name"""
+        user = request.user
+        if user.theme == core.models.User.Themes.LIGHT:
+            user.theme = core.models.User.Themes.DARK
+        else:
+            user.theme = core.models.User.Themes.LIGHT
+        user.save()
+        return JsonResponse({"success": f"Theme changed to {user.theme}."})
