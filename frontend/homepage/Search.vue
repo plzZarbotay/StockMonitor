@@ -22,9 +22,9 @@ export default {
 <style scoped>
 input {
     outline: none;
-    width: 40%;
+    width: 600px;
     height: 30px;
-    left: 30%;
+    left: 370px;
     position: relative;
     display: flex;
     top: -100px;
