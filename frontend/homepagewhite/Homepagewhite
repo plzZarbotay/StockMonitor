@@ -1,0 +1,80 @@
+<template>
+    <h1> 
+        <span class="title__text">Stock Market Monitor</span>
+    </h1>
+    <p>
+        <span class="left_line"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\Left_line.svg"></span>
+        <span class="right_line"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\Rignt_line.svg"></span>
+        <span class="text_und_tit_text"><b>Инструмент</b> для <b>анализа данных рынка</b>, предоставляющий возможность парсинга  данных о объеме продаж, трендах покупателей и динамике из дня в день. </span>
+        <span class="dedook"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\dedook.svg" width="280px" height="500px"></span>
+        <span class="top_arrows"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\top_arrows.svg" width="1130px" height="30px"></span>
+        <span class="text_podr">Подробнее</span>
+        <span class="podrobnee"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\Podrobnee.svg"</span>
+        <span class="bottom_arrows"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\bottom_arrows.svg" width="1130px" height="30px"></span>
+        <div class="rectangles1">
+            <span class="teacker">BTC</span>
+            <span class="teacker" style="color: #2DF50C;">+0,25%</span>
+        </div>
+        <div class="rectangles2">
+            <span class="teacker">ETH</span>
+            <span class="teacker" style="color: #2DF50C;">+0,5%</span>
+        </div>
+        <div class="rectangles3">
+            <span class="teacker">TON</span>
+            <span class="teacker" style="color: #DA1111;">-11,5%</span>
+        </div>
+        <div class="rectangles4">
+            <span class="teacker">DOGE</span>
+            <span class="teacker" style="color: #2DF50C;">+0,65%</span>
+        </div>
+        <div class="rectangles5">
+            <span class="teacker">BNB</span>
+            <span class="teacker" style="color: #DA1111;">-0,11%</span>
+        </div>
+
+        <span class="analitycs_market">Аналитика рынка</span>
+
+        <span class="SMM_text">Stock Market Monitor - инструмент для анализа данных рынка, предоставляющий возможность парсинга  данных о объеме продаж, трендах покупателей и динамике </span>
+        <span class="graphics"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\graphics.svg" width="450px" height="470px"></span>
+        <span class="left_icon"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\left_icon.svg" width="50px" height="52px"></span>
+        <span class="sr_icon"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\sr_icon.svg" width="50px" height="53px"></span>
+        <span class="right_icon"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\right_icon.svg" width="50px" height="53px"></span>
+        <span class="right_rec"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\right_rec.svg" width="135px" height="53px"></span>
+        <span class="car"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\car.svg" width="1150px" height="1100px"></span>
+        <span class="top_arrows2"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\top_arrows.svg" width="1130px" height="30px"></span>
+        <span class="bottom_arrows2"><img src="C:\Users\zhgen\Desktop\2-ой семестр\Проект\white\src\components\icons\bottom_arrows.svg" width="1130px" height="30px"></span>
+        <span class="blog">Блоги</span>
+        <span class="text_blog">Создавайте свои собственные блоги и показывайте другим как заработать на новую машину.</span>
+        <div class="rectangles6">
+            <span class="teacker">BTC</span>
+            <span class="teacker" style="color: #2DF50C;">+0,25%</span>
+        </div>
+        <div class="rectangles7">
+            <span class="teacker">ETH</span>
+            <span class="teacker" style="color: #2DF50C;">+0,5%</span>
+        </div>
+        <div class="rectangles8">
+            <span class="teacker">TON</span>
+            <span class="teacker" style="color: #DA1111;">-11,5%</span>
+        </div>
+        <div class="rectangles9">
+            <span class="teacker">DOGE</span>
+            <span class="teacker" style="color: #2DF50C;">+0,65%</span>
+        </div>
+        <div class="rectangles10">
+            <span class="teacker">BNB</span>
+            <span class="teacker" style="color: #DA1111;">-0,11%</span>
+        </div>
+
+    </p>
+</template>
+
+<script>
+
+</script>
+
+<style>
+</style>
+
+
+
