@@ -38,3 +38,10 @@ class PortfolioManager(models.Manager):
 
         stock_data.save()
         return None
+
+    def get_number_of_stocks(self, user, stock):
+        """Function for getting amount of user's distinct stock"""
+        filtered_stocks = self.filter(user=user, stock=stock).first()
+        if filtered_stocks is None:
+            return 0
+        return filtered_stocks.volume
