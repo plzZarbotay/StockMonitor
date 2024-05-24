@@ -14,6 +14,7 @@ class Stock(models.Model):
     description = models.TextField()
     emitent_country = models.CharField(max_length=50)
     market = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
 
     objects = StockManager()
 
