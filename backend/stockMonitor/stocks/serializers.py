@@ -36,8 +36,6 @@ class StockSerializer(rest_framework.serializers.ModelSerializer):
             "name",
             "ticker",
             "description",
-            "emitent_country",
-            "market",
             "day_change",
             "day_value",
             "last_price",
@@ -69,7 +67,9 @@ class StockShortSerializer(StockSerializer):
         """Object instance -> Dict of primitive datatypes."""
         day_change = stocks.models.StockData.objects.get_day_change(instance)
         last_price = stocks.models.StockData.objects.get_last_price(instance)
-        representation = super().to_representation(instance)
+        representation = super(
+            rest_framework.serializers.ModelSerializer, self
+        ).to_representation(instance)
         representation["day_change"] = day_change
         representation["last_price"] = last_price
         return representation

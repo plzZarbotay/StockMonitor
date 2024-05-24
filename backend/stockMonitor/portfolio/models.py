@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from portfolio.enums import TranscationDirection
+from portfolio.managers import NotificationManager
 from portfolio.managers import PortfolioManager
 from stocks.models import Stock
 
@@ -81,6 +82,8 @@ class Notifications(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(99999)], default=0
     )
     started_at = models.DateTimeField(auto_now_add=True)
+
+    objects = NotificationManager()
 
     class Meta:
         verbose_name = "уведомление"

@@ -1,13 +1,16 @@
 from django.db import transaction
+from django.http import HttpResponse
 from django.http import JsonResponse
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import inline_serializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import CharField
+from rest_framework.serializers import IntegerField
 from rest_framework.views import APIView
 
 from portfolio.enums import TranscationDirection
+from portfolio.models import Notifications
 from portfolio.models import PortfolioStock
 from portfolio.models import Transactions
 import portfolio.serializers
@@ -113,3 +116,87 @@ class BalanceView(APIView):
         return JsonResponse(
             portfolio.serializers.BalanceSerializer(request.user).data
         )
+
+
+class NotificationsView(APIView):
+    """Notifications view"""
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = portfolio.serializers.NotificationSerializer
+
+    @extend_schema(
+        responses={
+            200: portfolio.serializers.NotificationSerializer(many=True)
+        }
+    )
+    def get(self, request):
+        """Endpoint for getting all user notifications"""
+        notifications = Notifications.objects.get_active_notifications(
+            request.user
+        )
+        return JsonResponse(
+            portfolio.serializers.NotificationSerializer(
+                notifications,
+                many=True,
+            ).data,
+            safe=False,
+        )
+
+
+class SetNotificationsView(APIView):
+    """View for setting user notifications"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = portfolio.serializers.SetNotificationSerializer
+
+    @extend_schema(
+        responses={
+            201: inline_serializer(
+                name="set_notification_success",
+                fields={"object": IntegerField()},
+            ),
+            400: inline_serializer(
+                name="set_notification_error",
+                fields={"detail": CharField()},
+            ),
+        }
+    )
+    def post(self, request):
+        """Endpoint for setting notifications"""
+        serializer = portfolio.serializers.SetNotificationSerializer(
+            data=request.data
+        )
+
+        if serializer.is_valid():
+            stock = Stock.objects.get_stock_by_ticker(
+                ticker=serializer.data.get("ticker")
+            )
+            start_price = StockData.objects.get_last_price(stock=stock)
+            instance = Notifications.objects.create(
+                user=request.user,
+                stock=stock,
+                start_price=start_price,
+                percent=serializer.data.get("percent"),
+            )
+            return JsonResponse(
+                {"object": instance.id}, status=status.HTTP_201_CREATED
+            )
+        return JsonResponse(
+            {"detail": "Creation error"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class DeleteNotificationsView(APIView):
+    """Delete notifications view"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = None
+
+    @extend_schema(responses={204: None, 404: None})
+    def post(self, request, pk):
+        """Endpoint for deleting notifications"""
+        try:
+            obj = Notifications.objects.get(pk=pk)
+        except Notifications.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+        obj.delete()
+        return HttpResponse(status=status.HTTP_204_NO_CONTENT)

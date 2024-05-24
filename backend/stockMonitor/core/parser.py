@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.conf import settings
 import pandas as pd
 import requests
 
@@ -46,8 +47,8 @@ def get_candles(
         f"securities/{ticker}/candles.json"
     )
     params = {
-        "from": from_date.strftime("%Y-%m-%d %H:%M:%S"),
-        "till": till_date.strftime("%Y-%m-%d %H:%M:%S"),
+        "from": from_date.strftime(settings.DATETIME_FORMAT),
+        "till": till_date.strftime(settings.DATETIME_FORMAT),
         "interval": interval,
     }
     response = requests.get(url, params=params).json()
