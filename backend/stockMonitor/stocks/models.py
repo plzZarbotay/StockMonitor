@@ -34,6 +34,13 @@ class Stock(models.Model):
             force_insert, force_update, using, update_fields
         )
 
+    class Meta:
+        verbose_name = "акция"
+        verbose_name_plural = "акции"
+        indexes = [
+            models.Index(fields=["ticker"]),
+        ]
+
 
 class StockData(models.Model):
     """Model for stock data"""
@@ -64,7 +71,9 @@ class StockData(models.Model):
         decimal_places=14,
         max_digits=25,
     )
-    volume = models.IntegerField(verbose_name="объем торгов(в акциях)")
+    volume = models.PositiveBigIntegerField(
+        verbose_name="объем торгов(в акциях)"
+    )
     begin = models.DateTimeField(verbose_name="время открытия")
     end = models.DateTimeField(verbose_name="время закрытия")
 
@@ -72,3 +81,7 @@ class StockData(models.Model):
 
     def __str__(self):
         return f"<StockData: {self.stock} {self.begin} {self.end}>"
+
+    class Meta:
+        verbose_name = "свеча"
+        verbose_name_plural = "свечи"

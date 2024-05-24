@@ -2,7 +2,7 @@
   <div class="top-wrapper">
     <div class="top_left_box">
       <div class="top_box">
-        <div class="top_box_header1">{{ name }}</div>
+        <div class="top_box_header1">{{ stock_data.name }}</div>
         <img
           src="/static/bx-star.png"
           style="margin-left: -15px; margin-bottom: 3px"
@@ -15,7 +15,7 @@
     <div class="right_box">
       <div class="price_container">
         <span class="price_header">Цена</span>
-        <span class="price_value" id="price_value">{{ price }}</span>
+        <span class="price_value" id="price_value">{{ stock_data.price }}</span>
       </div>
       <div class="buttons_container">
         <button class="buy_button" @click="buyStock">Купить</button>
@@ -25,13 +25,22 @@
   </div>
 
   <div class="bottom_container">
-    <div class="bottom_box">{{ description }}</div>
+    <div class="bottom_box">{{ stock_data.description }}</div>
   </div>
 </template>
 
 <script>
+//import axios from "axios";
+
 export default {
-  props: ["name", "price", "description"],
+  props: {
+    stock_data: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   methods: {
     buyStock() {
       // Здесь должна быть ваша логика покупки акций
@@ -104,7 +113,7 @@ body {
   display: flex;
   flex-flow: column wrap;
   margin-left: 20px;
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .price_header {

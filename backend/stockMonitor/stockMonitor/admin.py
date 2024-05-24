@@ -4,8 +4,7 @@ from django.template.response import TemplateResponse
 from django.urls import path
 
 from core.tasks import delete_all_stock_data_task
-from core.tasks import get_candles_task
-from core.tasks import get_companies
+from core.tasks import get_candles_task, get_companies
 from stocks.models import Stock
 
 __all__ = []
@@ -34,10 +33,10 @@ class AdminSite(BaseAdminSite):
             if parse_data == "companies":
                 get_companies.delay()
             elif parse_data == "candles":
-                get_candles_task.delay("YNDX")
+                get_candles_task.delay(ticker="YNDX")
             elif parse_data == "candlesAll":
                 for company in Stock.objects.all():
-                    get_candles_task.delay(company.ticker)
+                    get_candles_task.delay(ticker=company.ticker)
             elif parse_data == "data_clean":
                 delete_all_stock_data_task.delay()
 
