@@ -6,8 +6,11 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiExample
 from drf_spectacular.utils import OpenApiParameter
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 
+import core.models
+from portfolio.models import PortfolioStock
 from stocks.models import Stock
 from stocks.models import StockData
 import stocks.serializers
@@ -65,7 +68,7 @@ class MarketView(APIView):
 class MarketDetailView(APIView):
     """Market view"""
 
-    authentication_classes = []
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @extend_schema(
         responses={200: stocks.serializers.StockSerializer(), 404: None},
@@ -73,10 +76,16 @@ class MarketDetailView(APIView):
     def get(self, request, ticker=None):
         """Method for getting stock data by `ticker` parameter"""
         stock = Stock.objects.get_stock_by_ticker(ticker)
-        serializer = stocks.serializers.StockSerializer(stock)
         if stock is None:
             raise Http404()
-        return JsonResponse(serializer.data)
+        serializer = stocks.serializers.StockSerializer(stock)
+        data = serializer.data
+        if isinstance(request.user, core.models.User):
+            volume_of_stocks = PortfolioStock.objects.get_number_of_stocks(
+                request.user, stock
+            )
+            data["volume"] = volume_of_stocks
+        return JsonResponse(data)
 
 
 class StocksDetailView(APIView):
