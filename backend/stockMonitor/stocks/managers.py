@@ -1,9 +1,10 @@
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
 from django.db import models
-from datetime import datetime, timedelta
+import pytz
 
 __all__ = []
-
-import pytz
 
 
 def get_mytimezone_date(original_datetime):
@@ -18,24 +19,31 @@ class StockManager(models.Manager):
 
     def search_for_stock(self, stock_name):
         """Search for stock by name or ticker"""
+        stocks = self.get_traded()
         if stock_name is None:
-            return self.filter()
+            return stocks
         q = models.Q(name__icontains=stock_name) | models.Q(
             ticker__icontains=stock_name
         )
-        return self.filter(q)
+        return stocks.filter(q)
 
     def get_stock_by_ticker(self, ticker):
         """Get one stock by ticker"""
+        stocks = self.get_traded()
         q = models.Q(ticker__icontains=ticker)
         try:
-            stock = self.get(q)
+            stock = stocks.get(q)
         except (self.model.DoesNotExist, self.model.MultipleObjectsReturned):
             stock = None
         return stock
 
     def get_company_name(self, ticker):
+        """Function for getting name of a company by ticker"""
         return self.filter(ticker=ticker).values()[0]["name"]
+
+    def get_traded(self):
+        """Function for getting traded stocks"""
+        return self.filter(is_active=True)
 
 
 class StockDataManager(models.Manager):
@@ -54,50 +62,64 @@ class StockDataManager(models.Manager):
         )
         match interval:
             case 1:
-                q = models.Q(end__minute=0)
-                for i in range(1, 61):
-                    q |= models.Q(end__minute=i)
-                candles = candles_range.filter(q)
+                candles = candles_range.all()
             case 5:
-                q = models.Q(end__minute=0)
-                for i in range(1, 13):
-                    q |= models.Q(end__minute=i * 5)
-                candles = candles_range.filter(q)
+                candles = candles_range.all()[::5]
             case 60:
-                candles = candles_range.filter(end__minute=50)
+                candles = candles_range.all()[::60]
             case 24:
-                candles = candles_range.filter(end__hour=23, end__minute=0)
+                candles = candles_range.all()[::1440]
             case _:
                 return None
         if len(candles) > max_candles:
             candles = candles[:max_candles]
         return candles.order_by("end")
 
-    def get_day_value(self, ticker):
-        from_date = datetime.now().replace(hour=00, minute=00, second=00)
-        # if self.annotate(models.Count()):
-
-        candles = self.get_candles(
-            ticker, from_date, datetime.now(), 1, max_candles=1440
+    def get_day_value(self, stock):
+        """Function for getting day value of a stock"""
+        today = datetime.now()
+        today_midnight = datetime(today.year, today.month, today.day)
+        candles_by_stock = self.filter(stock=stock)
+        candles = candles_by_stock.filter(
+            begin__gte=today_midnight,
+            end__lte=datetime.now(),
         )
         return candles.aggregate(models.Sum("value", default=0))["value__sum"]
+
+    def get_day_change(self, stock):
+        """Function for getting price change of a stock"""
+        yesterday_date = datetime.now() - relativedelta(days=1)
+        data = self.filter(
+            stock=stock,
+            end__year=yesterday_date.year,
+            end__month=yesterday_date.month,
+            end__day=yesterday_date.day,
+        )
+        if not data:
+            return 0
+        yesterday_price = data.latest("end").close_cost
+        now_price = self.get_last_price(stock=stock)
+        if now_price >= yesterday_price:
+            return round(now_price / yesterday_price * 100, 2) - 100
+        return -round(now_price / yesterday_price * 100, 2)
 
     def get_last_price(self, stock):
         """Function for getting last price of a stock"""
         return self.filter(stock=stock).latest("begin").close_cost
 
-    def get_day_change(self, stock):
-        yesterday_date = datetime.now() - timedelta(days=1)
-        yesterday_date = get_mytimezone_date(
-            yesterday_date.replace(hour=23, minute=59, second=59).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
+    def get_year_change(self, stock):
+        """Function for getting year change of stock price"""
+        old_date = datetime.now() - relativedelta(years=1)
+        data = self.filter(
+            stock=stock,
+            end__year=old_date.year,
+            end__month=old_date.month,
+            end__day=old_date.day,
         )
-        yesterday_price = self.filter(
-            stock=stock, end=yesterday_date
-        ).values()[0]["close_cost"]
+        if not data:
+            return 0
+        old_price = data.latest("end").close_cost
         now_price = self.get_last_price(stock=stock)
-        print(yesterday_price)  # убрать при коммите
-        if now_price >= yesterday_price:
-            return round(now_price / yesterday_price * 100, 2) - 100
-        return -round(now_price / yesterday_price * 100, 2)
+        if now_price >= old_price:
+            return round(now_price / old_price * 100, 2) - 100
+        return -round(now_price / old_price * 100, 2)

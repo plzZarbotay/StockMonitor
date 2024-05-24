@@ -37,17 +37,13 @@ def delete_all_stock_data_task():
 
 
 def get_mytimezone_date(original_datetime):
-    """Function for converting string to datetime with timezone """
+    """Function for converting string to datetime with timezone"""
     new_datetime = datetime.strptime(original_datetime, "%Y-%m-%d %H:%M:%S")
-    return timezone.make_aware(
-        new_datetime, pytz.timezone("Europe/Moscow")
-    )
+    return timezone.make_aware(new_datetime, pytz.timezone("Europe/Moscow"))
 
 
 @app.task
-def get_candles_task(
-    ticker, from_data=None
-):
+def get_candles_task(ticker, from_data=None):
     """Task for parsing candles data for 1 year"""
     if from_data is None:
         from_data = datetime.today() - relativedelta(years=1)

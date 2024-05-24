@@ -12,8 +12,6 @@ from stocks.models import Stock
 from stocks.models import StockData
 import stocks.serializers
 
-
-
 __all__ = []
 
 
@@ -56,11 +54,7 @@ class MarketView(APIView):
         relevant for data in `q` parameter"""
         search_stock = request.GET.get("q", None)
         stocks_data = Stock.objects.search_for_stock(search_stock)
-        # for company in stocks_data:
-            # if
-        serializer = stocks.serializers.StockSerializer(
-            stocks_data, many=True
-        )
+        serializer = stocks.serializers.StockSerializer(stocks_data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 
@@ -74,9 +68,6 @@ class MarketDetailView(APIView):
         """Method for getting stock data by `ticker` parameter"""
         stock = Stock.objects.get_stock_by_ticker(ticker)
         serializer = stocks.serializers.StockSerializer(stock)
-        print(StockData.objects.get_day_value('YNDX'))  # убрать при коммите
-        print(StockData.objects.get_day_change(stock))  # убрать при коммите
-        print(Stock.objects.get_company_name('YNDX'))  # убрать при коммите
         if stock is None:
             raise Http404()
         return JsonResponse(serializer.data)

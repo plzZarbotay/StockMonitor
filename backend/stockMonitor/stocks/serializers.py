@@ -22,6 +22,9 @@ class StockSerializer(rest_framework.serializers.ModelSerializer):
     day_value = rest_framework.serializers.DecimalField(
         decimal_places=14, max_digits=25, default=0
     )
+    last_price = rest_framework.serializers.DecimalField(
+        max_digits=10, decimal_places=3, default=0
+    )
 
     class Meta:
         """Meta class"""
@@ -35,16 +38,18 @@ class StockSerializer(rest_framework.serializers.ModelSerializer):
             "market",
             "day_change",
             "day_value",
+            "last_price",
         ]
 
     def to_representation(self, instance):
+        """Object instance -> Dict of primitive datatypes."""
         day_change = stocks.models.StockData.objects.get_day_change(instance)
-        day_value = stocks.models.StockData.objects.get_day_value(instance.ticker)
+        day_value = stocks.models.StockData.objects.get_day_value(instance)
+        last_price = stocks.models.StockData.objects.get_last_price(instance)
         representation = super().to_representation(instance)
-        print(type(representation), type(instance))
         representation["day_change"] = day_change
         representation["day_value"] = day_value
-        print(instance)
+        representation["last_price"] = last_price
         return representation
 
 
