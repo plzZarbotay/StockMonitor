@@ -58,7 +58,7 @@ class StockShortSerializer(StockSerializer):
     """Serializer for getting data about stocks(short edition)"""
 
     class Meta:
-        """Meta class"""
+        """Meta class."""
 
         model = stocks.models.Stock
         fields = ("ticker", "name")
