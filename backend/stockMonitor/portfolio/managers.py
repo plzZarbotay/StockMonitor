@@ -1,6 +1,7 @@
 from django.db import models
 
 from portfolio.enums import TranscationDirection
+from stocks.models import StockData
 
 __all__ = []
 
@@ -39,9 +40,20 @@ class PortfolioManager(models.Manager):
         stock_data.save()
         return None
 
+    def get_day_profit(self, user):
+        """Function for getting daily profit of user's portfolio"""
+        total = 0
+        amount = 0
+        print('Portfolio:', self.get_portfolio_by_user(user))
+        for stock in self.get_portfolio_by_user(user):
+            total += StockData.objects.get_day_change(stock.stock)
+            amount += 1
+        return round(total / amount, 2)
+
 
 class NotificationManager(models.Manager):
     """Notification manager for notification model"""
+
     def get_active_notifications(self, user):
         """Function for getting active notifications from user portfolio"""
         return self.filter(user=user, is_active=True)
