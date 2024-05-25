@@ -11,14 +11,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name="stockdata",
-            old_name="stock_id",
-            new_name="stock",
-        ),
-        migrations.AddField(
-            model_name="stock",
-            name="is_active",
-            field=models.BooleanField(default=True),
-        ),
+        # migrations.RenameField(
+        #     model_name="stockdata",
+        #     old_name="stock_id",
+        #     new_name="stock",
+        # ),
+        # migrations.AddField(
+        #     model_name="stock",
+        #     name="is_active",
+        #     field=models.BooleanField(default=True),
+        # ),
     ]
