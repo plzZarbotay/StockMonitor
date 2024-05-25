@@ -50,20 +50,22 @@ class StockDataManager(models.Manager):
             begin__gte=from_date,
             end__lte=till_date,
         )
+        candles_range = candles_range.order_by("end")
         match interval:
             case 1:
                 candles = candles_range
             case 5:
-                candles = candles_range.all()[::5]
+                candles = candles_range[::5]
             case 60:
-                candles = candles_range.all()[::60]
+                candles = candles_range[::60]
             case 24:
-                candles = candles_range.all()[::1440]
+                candles = candles_range[::1440]
             case _:
                 return None
         if len(candles) > max_candles:
             candles = candles[:max_candles]
-        return candles.order_by("end")
+        return candles
+
 
     def get_day_value(self, stock):
         """Function for getting day value of a stock"""
