@@ -64,7 +64,8 @@ class StockDataManager(models.Manager):
                 return None
         if len(candles) > max_candles:
             candles = candles[:max_candles]
-        return candles
+
+        return candles_range
 
     def get_day_value(self, stock):
         """Function for getting day value of a stock"""

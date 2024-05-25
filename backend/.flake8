@@ -6,7 +6,6 @@ ignore=DC100,DC104
 exclude=*/migrations/*,
 per-file-ignores=
     manage.py:DC102,
-    stocks/managers.py:R504,
 
 
 application_import_names=stockMonitor,core,authentification,stocks,portfolio,account
