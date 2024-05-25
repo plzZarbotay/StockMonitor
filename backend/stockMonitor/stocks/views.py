@@ -127,11 +127,13 @@ class PingView(APIView):
         serializer.is_valid(raise_exception=False)
         data = serializer.validated_data
         candles = StockData.objects.get_candles(
-            ticker,
-            data.get("from_date"),
-            datetime.now(),
-            data.get("interval"),
-        )
+                    ticker,
+                    data.get("from_date"),
+                    datetime.now(),
+                    data.get("interval"),
+                    10
+                )
+
         candles_serializer = stocks.serializers.StockDataSerializer(
             candles, many=True
         )
