@@ -67,6 +67,7 @@ class StockDataManager(models.Manager):
 
         return candles_range
 
+
     def get_day_value(self, stock):
         """Function for getting day value of a stock"""
         today = datetime.now()

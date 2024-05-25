@@ -8,6 +8,7 @@ const state = {
   refreshToken: localStorage.getItem("refreshToken") || "",
   error: null,
   success: null,
+  balance: localStorage.getItem("balance") || 0,
 };
 
 const mutations = {
@@ -30,6 +31,10 @@ const mutations = {
     state.user = { email: "", password: "" };
     state.token = "";
     state.refreshToken = "";
+  },
+  SET_BALANCE(state, balance) {
+    state.balance = balance;
+    localStorage.setItem("balance", balance);
   },
 };
 
@@ -94,7 +99,7 @@ const actions = {
   async refreshToken({ commit, state }) {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/refresh-token/",
+        "http://127.0.0.1:8000/api/v1/auth/refresh_token/",
         {
           refresh: state.refreshToken,
         }
@@ -111,6 +116,22 @@ const actions = {
       router.push("/login");
     }
   },
+  async getBalance({ commit, state }) {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/v1/portfolio/get_balance/",
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
+      const balance = response.data.balance;
+      commit("SET_BALANCE", balance);
+    } catch (err) {
+      commit("SET_ERROR", `An error occurred: ${err.message}`);
+    }
+  },
 };
 
 const getters = {
@@ -118,6 +139,7 @@ const getters = {
   isLoggedIn: (state) => !!state.token,
   error: (state) => state.error,
   success: (state) => state.success,
+  balance: (state) => state.balance,
 };
 
 export default {

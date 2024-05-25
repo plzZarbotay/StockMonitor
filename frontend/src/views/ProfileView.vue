@@ -1,47 +1,129 @@
 <template>
-  <div class="top_header_wrapper">
-    <div class="top_header">Портфель</div>
-  </div>
-  <div class="name_box">
-    <img class="avatar" src="./static/user-icon.png" />
-    <div class="namevalue" id="name">
-      {{ user ? user.email.split("@")[0] : "Name Glitch" }}
+  <div
+    :class="{
+      light_body: isLightTheme,
+      dark_body: !isLightTheme,
+    }"
+  >
+    <TopBarView />
+    <div class="name_box">
+      <img class="avatar" src="./static/user-icon.png" />
+      <div class="namevalue" id="name">
+        {{ user ? user.email.split("@")[0] : "Name Glitch" }}
+      </div>
     </div>
-  </div>
-  <div class="buttons_wrapper">
-    <div class="income_per_day_box">
-      <div class="income_per_day_header">Стоимость</div>
-      <div class="income_per_day_value">183,256₽</div>
+    <button class="logout_button" @click="redirectToLogoutPage">Выход</button>
+    <div class="buttons_wrapper">
+      <div class="income_per_day_box">
+        <div class="income_per_day_header">Баланс</div>
+        <div class="income_per_day_value">{{ balance }}</div>
+      </div>
+      <div class="total_value_box">
+        <div class="total_value_header">Стоимость</div>
+        <div class="income_per_day_value">183,256₽</div>
+      </div>
+      <div class="profitability_box">
+        <div class="profitability_box_header">Общий доход</div>
+        <div class="profitability_box_value">+63%</div>
+      </div>
     </div>
-    <div class="total_value_box">
-      <div class="total_value_header">Доход за месяц</div>
-      <div class="income_per_day_value">+0.5%</div>
-    </div>
-    <div class="profitability_box">
-      <div class="profitability_box_header">Общий доход</div>
-      <div class="profitability_box_value">+63%</div>
-    </div>
-  </div>
 
-  <div class="data_container">
-    <div class="data_container_header">
-      <span>Название</span> <span>Количество</span>
-      <span>Цена за единицу</span> <span>Общая цена</span> <span>Доля</span>
+    <div class="data_container">
+      <div class="data_container_header">
+        <span>Название</span> <span>Количество</span>
+        <span>Цена за единицу</span> <span>Общая цена</span> <span>Доля</span>
+      </div>
+      <div v-if="stocks.length === 0" class="no_data_message">
+        Транзакции не были совершены
+      </div>
+      <div
+        v-else
+        class="stock_item"
+        v-for="stock in stocks"
+        :key="stock.stock.ticker"
+      >
+        <span>{{ stock.stock.name }}</span>
+        <span>{{ stock.volume }}</span>
+        <span>{{ stock.stock.last_price }}</span>
+        <!-- Add other properties as needed -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import TopBarView from "@/components/TopBarView.vue";
 import { mapState } from "vuex";
-
+import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState("auth", ["user"]),
+    ...mapGetters("auth", ["balance"]),
+    ...mapGetters(["isLightTheme"]),
+  },
+  methods: {
+    async loadBalance() {
+      await this.getBalance();
+      await this.loadOwnedStocks();
+    },
+    ...mapActions("auth", ["getBalance"]),
+    redirectToLogoutPage() {
+      this.$router.push("/auth/logout");
+    },
+    async loadOwnedStocks() {
+      try {
+        await this.getOwnedStocks();
+      } catch (error) {
+        console.error("Error fetching owned stocks:", error);
+      }
+    },
+  },
+  components: {
+    TopBarView,
+  },
+  mounted() {
+    this.loadBalance();
+  },
+  data() {
+    return {
+      stocks: [],
+    };
   },
 };
 </script>
 
 <style>
+.logout_button {
+  position: absolute;
+  width: 180px;
+  height: 54.01px;
+  right: 1.1%;
+  top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border: 5px solid transparent;
+  border-radius: 40px;
+  background: rgb(70, 62, 127);
+  color: white;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.light_body {
+  background-color: #e0e0e0;
+  height: 1000px;
+  transition: transform 0.4s ease;
+}
+
+.logout_button:hover {
+  cursor: pointer;
+  background-color: rgb(156, 198, 235);
+  color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
 body {
   background-color: rgba(10, 20, 41, 1);
   color: white;
@@ -53,7 +135,7 @@ body {
 span {
   font-size: 20px;
   font-weight: 400;
-  margin: 75px;
+  margin: 0px;
 }
 
 .top_header_wrapper {

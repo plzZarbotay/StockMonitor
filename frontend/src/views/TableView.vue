@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div
+    :class="{
+      table_light: isLightTheme,
+      table_dark: !isLightTheme,
+    }"
+  >
     <TopBarView />
     <div class="container">
       <table>
@@ -12,7 +17,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in tableData" :key="row.name">
+          <tr
+            v-for="row in tableData"
+            :key="row.name"
+            @click="navigateToStock(row.ticker)"
+          >
             <td>
               <span>{{ row.name }}</span>
             </td>
@@ -37,32 +46,36 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import TopBarView from "@/components/TopBarView.vue";
+import router from "@/router";
 
 export default {
   components: {
     TopBarView,
   },
   computed: {
-    ...mapState(["stock_data"]),
-    tableData() {
-      return this.stock_data;
-    },
-  },
-  methods: {
-    ...mapActions(["GET_STOCKS_FROM_API"]),
-    async fetchData() {
-      await this.GET_STOCKS_FROM_API();
-    },
+    ...mapGetters(["isLightTheme"]),
+    ...mapGetters(["tableData"]),
   },
   mounted() {
-    this.fetchData();
+    this.fetchStocks();
+  },
+  methods: {
+    ...mapActions(["fetchStocks"]),
+    navigateToStock(ticker) {
+      router.push({ name: "stock", params: { ticker } });
+    },
   },
 };
 </script>
 
 <style>
+.table_light {
+  background-color: #e0e0e0;
+  height: 1000px;
+}
+
 body {
   font-family: system-ui;
   color: #42b983;

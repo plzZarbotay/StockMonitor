@@ -35,6 +35,7 @@ const actions = {
           from_date: fromDate,
           till_date: toDate,
           interval: 5,
+          max_candles: 201200,
         }
       );
 
