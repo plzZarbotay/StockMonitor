@@ -2,16 +2,8 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.db import models
-import pytz
 
 __all__ = []
-
-
-def get_mytimezone_date(original_datetime):
-    """Function for converting string to datetime with timezone"""
-    new_datetime = datetime.strptime(original_datetime, "%Y-%m-%d %H:%M:%S")
-    moscow = pytz.timezone("Europe/Moscow")
-    return moscow.localize(new_datetime)
 
 
 class StockManager(models.Manager):
@@ -49,9 +41,7 @@ class StockManager(models.Manager):
 class StockDataManager(models.Manager):
     """Manager for stock data model"""
 
-    def get_candles(
-        self, ticker, from_date, till_date, interval, max_candles=1000
-    ):
+    def get_candles(self, ticker, from_date, till_date, interval, max_candles):
         """interval: 5m: 5, 60m: 60, 1d: 24, 1w: 7, 1m: 31, 1y: 4"""
         candles_by_ticker = self.get_queryset().filter(
             stock__ticker__exact=ticker
@@ -62,7 +52,7 @@ class StockDataManager(models.Manager):
         )
         match interval:
             case 1:
-                candles = candles_range.all()
+                candles = candles_range
             case 5:
                 candles = candles_range.all()[::5]
             case 60:
@@ -81,13 +71,13 @@ class StockDataManager(models.Manager):
         today_midnight = datetime(today.year, today.month, today.day)
         candles_by_stock = self.filter(stock=stock)
         candles = candles_by_stock.filter(
-            begin__gte=today_midnight,
+            begin__gt=today_midnight,
             end__lte=datetime.now(),
         )
         return candles.aggregate(models.Sum("value", default=0))["value__sum"]
 
     def get_day_change(self, stock):
-        """Function for getting price change of a stock"""
+        """Function for getting day price change of a stock"""
         yesterday_date = datetime.now() - relativedelta(days=1)
         data = self.filter(
             stock=stock,
@@ -99,9 +89,9 @@ class StockDataManager(models.Manager):
             return 0
         yesterday_price = data.latest("end").close_cost
         now_price = self.get_last_price(stock=stock)
-        if now_price >= yesterday_price:
-            return round(now_price / yesterday_price * 100, 2) - 100
-        return -round(now_price / yesterday_price * 100, 2)
+        price_change = now_price - yesterday_price
+        price_change_percent = (price_change / yesterday_price) * 100
+        return round(price_change_percent, 2)
 
     def get_last_price(self, stock):
         """Function for getting last price of a stock"""
@@ -120,6 +110,6 @@ class StockDataManager(models.Manager):
             return 0
         old_price = data.latest("end").close_cost
         now_price = self.get_last_price(stock=stock)
-        if now_price >= old_price:
-            return round(now_price / old_price * 100, 2) - 100
-        return -round(now_price / old_price * 100, 2)
+        price_change = now_price - old_price
+        price_change_percent = (price_change / old_price) * 100
+        return round(price_change_percent, 2)

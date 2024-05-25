@@ -59,9 +59,7 @@ class MarketView(APIView):
         relevant for data in `q` parameter"""
         search_stock = request.GET.get("q", None)
         stocks_data = Stock.objects.search_for_stock(search_stock)
-        serializer = stocks.serializers.StockSerializer(
-            stocks_data.values(), many=True
-        )
+        serializer = stocks.serializers.StockSerializer(stocks_data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 
@@ -74,7 +72,9 @@ class MarketDetailView(APIView):
         responses={200: stocks.serializers.StockSerializer(), 404: None},
     )
     def get(self, request, ticker=None):
-        """Method for getting stock data by `ticker` parameter"""
+        """Method for getting stock data by `ticker` parameter.
+        If `volume_by_user` is null -> request by anonymous user, else integer
+        """
         stock = Stock.objects.get_stock_by_ticker(ticker)
         if stock is None:
             raise Http404()
@@ -140,6 +140,7 @@ class PingView(APIView):
             data.get("from_date"),
             datetime.now(),
             data.get("interval"),
+            10,
         )
         candles_serializer = stocks.serializers.StockDataSerializer(
             candles, many=True

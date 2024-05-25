@@ -24,16 +24,14 @@ def get_companies():
     """Task for getting all companies to database"""
     frame = load_companies()
     records = frame.to_dict("records")
-    model_instances = [
-        Stock(
+    for record in records:
+        stock = Stock(
             name=record["shortname"],
             ticker=record["secid"],
             emitent_country="RU",
             market=record["type"],
         )
-        for record in records
-    ]
-    Stock.objects.bulk_create(model_instances)
+        stock.save()
 
 
 @celery_app.task
@@ -45,7 +43,10 @@ def delete_all_stock_data_task():
 
 def get_mytimezone_date(original_datetime):
     """Function for converting string to datetime with timezone"""
-    new_datetime = datetime.strptime(original_datetime, "%Y-%m-%d %H:%M:%S")
+    new_datetime = datetime.strptime(
+        original_datetime,
+        settings.DATETIME_FORMAT,
+    )
     moscow = pytz.timezone("Europe/Moscow")
     return moscow.localize(new_datetime)
 
@@ -63,12 +64,14 @@ def create_task(ticker):
         )
     else:
         schedule = schedule[0]
-    PeriodicTask.objects.create(
-        interval=schedule,
-        name=f"<make periodic parsing for {ticker}>",
-        task="core.tasks.periodic_get_candles_task",
-        args=json.dumps([ticker]),
-    )
+    tasks = PeriodicTask.objects.all()
+    if not tasks.filter(name__contains=ticker):
+        PeriodicTask.objects.create(
+            interval=schedule,
+            name=f"<make periodic parsing for {ticker}>",
+            task="core.tasks.periodic_get_candles_task",
+            args=json.dumps([ticker]),
+        )
 
 
 @celery_app.task
@@ -143,9 +146,27 @@ def get_candles_task(ticker, from_data=None, make_task=True):
 
 
 @celery_app.task
+def set_tasks_task():
+    """Function for setting all periodic tasks"""
+    tasks = PeriodicTask.objects.all()
+    for stock in Stock.objects.all():
+        if not tasks.filter(name__contains=stock.ticker):
+            create_task(stock.ticker)
+
+
+@celery_app.task
 def periodic_get_candles_task(ticker: str):
     """Task for periodic parsing candles data for last n minutes"""
-    last_date = (
-        StockData.objects.filter(stock__ticker=ticker).order_by("-end")[0].end
-    )
+    stock = Stock.objects.get_stock_by_ticker(ticker)
+    candles = StockData.objects.filter(stock__ticker=ticker)
+    if candles.count() < 300:
+        task = PeriodicTask.objects.filter(name__contains=ticker).first()
+        task.enabled = False
+        task.save()
+        stock.is_active = False
+        stock.save()
+        return
+    stock.is_active = True
+    stock.save()
+    last_date = candles.order_by("-end")[0].end
     get_candles_task(ticker, from_data=last_date, make_task=False)
