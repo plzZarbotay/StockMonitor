@@ -117,6 +117,8 @@ def get_candles_task(ticker, from_data=None, make_task=True):
     records = frame.to_dict("records")
     if len(records) != 0:
         stock = Stock.objects.get_stock_by_ticker(ticker=ticker)
+        if stock is None:
+            return
         last_date = get_mytimezone_date(records[-1]["end"]) + relativedelta(
             seconds=1
         )
