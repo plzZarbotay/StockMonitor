@@ -97,6 +97,7 @@ class OwnedStocksView(APIView):
     def get(self, request):
         """Endpoint which returns portfolio of user"""
         data = PortfolioStock.objects.get_portfolio_by_user(user=request.user)
+        print(PortfolioStock.objects.get_portfolio_value(request.user))
         return JsonResponse(
             portfolio.serializers.PortfolioStockSerializer(
                 data, many=True

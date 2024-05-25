@@ -2,6 +2,7 @@ from django.db import models
 
 from portfolio.enums import TranscationDirection
 from stocks.models import StockData
+from core.models import User
 
 __all__ = []
 
@@ -48,6 +49,23 @@ class PortfolioManager(models.Manager):
             total += StockData.objects.get_day_change(stock.stock)
             amount += 1
         return round(total / amount, 2)
+
+    def get_number_of_stock(self, user, stock):
+        """Function for getting amount of user's distinct stock"""
+        filtered_stocks = self.filter(user=user, stock=stock).first()
+        if filtered_stocks is None:
+            return 0
+        return filtered_stocks.volume
+
+    def get_portfolio_value(self, user):
+        """Get total value of user's portfolio"""
+        total = 0
+        for stock in self.get_portfolio_by_user(user):
+            total += StockData.objects.get_last_price(stock.stock) * self.get_number_of_stock(user, stock.stock)
+        return total
+
+    def get_user_balance(self, user):
+        return User.objects.filter(user=user).balance
 
 
 class NotificationManager(models.Manager):

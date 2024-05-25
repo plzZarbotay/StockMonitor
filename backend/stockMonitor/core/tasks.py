@@ -17,6 +17,125 @@ from stocks.models import Stock
 from stocks.models import StockData
 
 __all__ = []
+# гит ао, смз ао, орг ао, тгк-2, форвард н, ао ак туламаш, удмуртнфт,
+# аско ао, дорог бж ао, оао синтезе, сумз ао, газкон ао, газ-сервис, газ-тек ао
+BLACKLIST_COMPANIES = [
+    "GRNT",
+    "MGNZ",
+    "ORUP",
+    "TGKB",
+    "TGKJ",
+    "TUMA",
+    "UDMN",
+    "ACKO",
+    "DGBZ",
+    "SNTZ",
+    "SUMZ",
+    "GAZC",
+    "GAZS",
+    "GAZT",
+    "NKSH",
+    "ZVEZ",
+    "ZAYM",
+    "YKEN",
+    "VSYD",
+    "VLHZ",
+    "YRSB",
+    "TUZA",
+    "TRMK",
+    "TGKA",
+    "TGKN",
+    "VEON-RX",
+    "YAKG",
+    "VRSB",
+    "VJGZ",
+    "VGSB",
+    "UWGN",
+    "UTAR",
+    "USBN",
+    "URKZ",
+    "UPRO",
+    "UNKL",
+    "UNAC",
+    "UKUZ",
+    "UGLD",
+    "ABIO",
+    "ABRD",
+    "AKRN",
+    "AMEZ",
+    "AQUA",
+    "ARSA",
+    "ASSB",
+    "ASTR",
+    "BELU",
+    "BLNG",
+    "BRZL",
+    "CARM",
+    "BSPB",
+    "CHGZ",
+    "CHKZ",
+    "CHMF",
+    "DIAS",
+    "ELFV",
+    "ELTZ",
+    "ENPG",
+    "FESH",
+    "GEMC",
+    "GMKN",
+    "IGST",
+    "IRAO",
+    "IRKT",
+    "JNOS",
+    "KAZT",
+    "KCHE",
+    "KGKC",
+    "KLSB",
+    "KMEZ",
+    "KOGK",
+    "KRKN",
+    "KRSB",
+    "LSNG",
+    "LSRG",
+    "LVHK",
+    "MAGE",
+    "MFGS",
+    "MGKL",
+    "KZOS",
+    "KUZB",
+    "MRKZ",
+    "MRKY",
+    "MRKV",
+    "MRKU",
+    "MRKS",
+    "MRKP",
+    "MRKK",
+    "NKHP",
+    "NKNC",
+    "NLMK",
+    "NMTP",
+    "NNSB",
+    "SNGS",
+    "STSB",
+    "SVAV",
+    "TASB",
+    "TTLK",
+    "TORS",
+    "TNSE",
+    "VSMO",
+    "TTLK",
+    "MISB",
+    "DVEC",
+    "DZRD",
+    "KBSB",
+    "KLVZ",
+    "KUBE",
+    "LPSB",
+    "MAGN",
+    "CHMK",
+    "CBOM",
+    "AVAN",
+    ""
+]
 
 
 @celery_app.task
@@ -25,13 +144,14 @@ def get_companies():
     frame = load_companies()
     records = frame.to_dict("records")
     for record in records:
-        stock = Stock(
-            name=record["shortname"],
-            ticker=record["secid"],
-            emitent_country="RU",
-            market=record["type"],
-        )
-        stock.save()
+        if record["secid"].strip().upper() not in BLACKLIST_COMPANIES:
+            stock = Stock(
+                name=record["shortname"],
+                ticker=record["secid"],
+                emitent_country="RU",
+                market=record["type"],
+            )
+            stock.save()
 
 
 @celery_app.task
@@ -160,11 +280,13 @@ def set_tasks_task():
 def periodic_get_candles_task(ticker: str):
     """Task for periodic parsing candles data for last n minutes"""
     stock = Stock.objects.get_stock_by_ticker(ticker)
+    if stock is None:
+        return
     candles = StockData.objects.filter(stock__ticker=ticker)
     if candles.count() < 300:
-        task = PeriodicTask.objects.filter(name__contains=ticker).first()
-        task.enabled = False
-        task.save()
+        # task = PeriodicTask.objects.filter(name__contains=ticker).first()
+        # task.enabled = False
+        # task.save()
         stock.is_active = False
         stock.save()
         return
