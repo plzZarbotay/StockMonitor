@@ -145,6 +145,7 @@ class NotificationsView(APIView):
 
 class SetNotificationsView(APIView):
     """View for setting user notifications"""
+
     permission_classes = [IsAuthenticated]
     serializer_class = portfolio.serializers.SetNotificationSerializer
 
@@ -187,6 +188,7 @@ class SetNotificationsView(APIView):
 
 class DeleteNotificationsView(APIView):
     """Delete notifications view"""
+
     permission_classes = [IsAuthenticated]
     serializer_class = None
 
