@@ -44,7 +44,6 @@ class PortfolioManager(models.Manager):
         """Function for getting daily profit of user's portfolio"""
         total = 0
         amount = 0
-        print('Portfolio:', self.get_portfolio_by_user(user))
         for stock in self.get_portfolio_by_user(user):
             total += StockData.objects.get_day_change(stock.stock)
             amount += 1
