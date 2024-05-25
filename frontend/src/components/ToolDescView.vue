@@ -1,46 +1,54 @@
 <template>
-  <div class="top-wrapper">
-    <div class="top_left_box">
-      <div class="top_box">
-        <div class="top_box_header1">{{ stock_data.name }}</div>
-        <img
-          src="/static/bx-star.png"
-          style="margin-left: -15px; margin-bottom: 3px"
-        />
-        <img src="/static/bxl-bitcoin.png" style="margin: 10px; height: 70%" />
+  <div
+    :class="{
+      desk_light: isLightTheme,
+      desk_dark: !isLightTheme,
+    }"
+  >
+    <TopBarView />
+    <div class="top-wrapper">
+      <div class="top_left_box">
+        <div class="top_box">
+          <div class="top_box_header1" style="color: #42b983">
+            {{ name }} || {ticker}
+          </div>
+        </div>
+        <ChartView class="chart_position" />
       </div>
-      <img class="chart_box" src="/static/chart.png" />
+
+      <div class="right_box">
+        <div class="price_container">
+          <span class="price_header">Цена</span>
+          <span class="price_value" id="price_value">{{ 1 }}</span>
+        </div>
+        <div class="buttons_container">
+          <button class="buy_button" @click="buyStock">Купить</button>
+          <button class="sell_button" @click="sellStock">Продать</button>
+        </div>
+      </div>
     </div>
 
-    <div class="right_box">
-      <div class="price_container">
-        <span class="price_header">Цена</span>
-        <span class="price_value" id="price_value">{{ stock_data.price }}</span>
-      </div>
-      <div class="buttons_container">
-        <button class="buy_button" @click="buyStock">Купить</button>
-        <button class="sell_button" @click="sellStock">Продать</button>
-      </div>
+    <div class="bottom_container">
+      <div class="bottom_box">{{ 1 }}</div>
     </div>
-  </div>
-
-  <div class="bottom_container">
-    <div class="bottom_box">{{ stock_data.description }}</div>
   </div>
 </template>
 
 <script>
 //import axios from "axios";
+import { mapGetters } from "vuex";
+import ChartView from "@/components/ChartView.vue";
+import TopBarView from "@/components/TopBarView.vue";
 
 export default {
-  props: {
-    stock_data: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
+  computed: {
+    ...mapGetters(["isLightTheme"]),
   },
+  components: {
+    ChartView,
+    TopBarView,
+  },
+  props: ["name"],
   methods: {
     buyStock() {
       // Здесь должна быть ваша логика покупки акций
@@ -55,6 +63,11 @@ export default {
 </script>
 
 <style>
+.desk_light {
+  background-color: #e0e0e0;
+  height: 1000px;
+}
+
 body {
   background-color: rgba(10, 20, 41, 1);
   color: white;
@@ -69,6 +82,10 @@ body {
   margin-top: 50px;
   width: 1309px;
   height: 300px;
+}
+
+.chart_position {
+  top: 20%;
 }
 
 .top_left_box {
@@ -91,7 +108,7 @@ body {
 
 .top_box_header1 {
   display: flex;
-  margin-left: 30px;
+  margin-left: 60px;
 }
 
 .top_box_header2 {
@@ -100,9 +117,10 @@ body {
 }
 
 .right_box {
-  width: 226px;
-  height: 259px;
-  left: 1389px;
+  display: flex;
+  width: 250px;
+  height: 250px;
+  left: 10%;
   top: 40px;
 
   background: #335062;
@@ -117,11 +135,19 @@ body {
 }
 
 .price_header {
+  position: relative;
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: 5px;
+  left: 160%;
+  top: 6%;
+  color: white;
+  font-size: 20px;
 }
 
 .price_value {
+  position: relative;
+  top: 10%;
+  left: 160%;
   color: white;
   font-weight: bolder;
   font-size: 25px;
@@ -143,7 +169,8 @@ body {
   font-family: system-ui;
   font-size: 18px;
   font-weight: 600;
-
+  top: 30%;
+  left: 75.7%;
   border-style: hidden;
   background: #309924;
   border-radius: 10px;
@@ -151,6 +178,8 @@ body {
 
 .sell_button {
   position: absolute;
+  top: 30%;
+  left: 75.7%;
   width: 184px;
   height: 46.14px;
   margin-top: 70px;
@@ -173,7 +202,7 @@ body {
   display: flex;
   text-align: center;
   justify-content: center;
-  margin-top: 220px;
+  margin-top: 20%;
 }
 
 .bottom_box {

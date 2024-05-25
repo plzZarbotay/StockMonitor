@@ -27,7 +27,7 @@
     </form>
     <p class="">
       Нет аккаунта? ->
-      <router-link to="/register" class="register-link"
+      <router-link to="/auth/register" class="register-link"
         >Регистрация</router-link
       >
     </p>
