@@ -12,7 +12,7 @@ services:
       - "5432:${POSTGRES_PORT}"
     volumes:
       - db_data:/var/lib/postgresql/data/
-    restart: on-failure
+    restart: unless-stopped
   redis:
     env_file:
       - ./.env
@@ -20,19 +20,9 @@ services:
     environment:
 #      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
-    restart: on-failure
+    restart: unless-stopped
     ports:
       - "6379:${REDIS_PORT}"
-
-#  swagger-editor:
-#    image: swaggerapi/swagger-editor
-#    ports:
-#      - 80:8080
-#    volumes:
-#      - ./swagger.yml:/tmp/swagger.yml
-#    environment:
-#      - SWAGGER_FILE=/tmp/swagger.yml
-
 
 volumes:
   db_data:

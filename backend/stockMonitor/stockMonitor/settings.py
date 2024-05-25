@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "stocks.apps.StocksConfig",
     "portfolio.apps.PortfolioConfig",
+    "account.apps.AccountConfig",
     "drf_spectacular",
     "django_celery_beat",
 ]
@@ -151,7 +152,9 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-PARSING_INTERVAL = 5
+PARSING_INTERVAL = 1
+
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

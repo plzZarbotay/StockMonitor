@@ -3,6 +3,6 @@ line-length = 79
 target-version = ['py310']
 
 [tool.isort]
-py_version = 310
+py_version = "all"
 profile = "google"
-known_first_party = ["stockMonitor", "authentification", "core", "stocks", "portfolio"]
+known_first_party = ["stockMonitor", "authentification", "core", "stocks", "portfolio", "account"]
